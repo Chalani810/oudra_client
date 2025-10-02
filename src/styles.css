@@ -1,0 +1,202 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 50px;
+    background: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Logo */
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #e63946;
+}
+
+/* Black text */
+.black {
+    color: #000;
+}
+
+/* Red text */
+.red {
+    color: #e63946;
+}
+
+/* Navigation */
+nav ul {
+    display: flex;
+    list-style: none;
+    gap: 30px; /* Adjust spacing between items */
+    padding: 0;
+    margin: 0;
+}
+
+nav ul li a {
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    transition: color 0.3s ease-in-out;
+}
+
+nav ul li a:hover {
+    color: #e63946;
+}
+
+/* Button */
+.btn {
+    background-color: #e63946;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s ease-in-out;
+}
+
+.btn:hover {
+    background-color: #d62828;
+}
+
+
+.header .logo img {
+    width: 120px; /* Adjust size as needed */
+    height: auto;
+}
+
+/* Navigation Menu */
+.navbar {
+    display: flex;
+    gap: 25px;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 600;
+    font-size: 16px;
+    transition: color 0.3s ease-in-out;
+}
+
+.navbar a:hover {
+    color: #ff3c3c;
+}
+
+/* Right Section (Search + Login) */
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Search Bar */
+.search-box {
+    position: relative;
+}
+
+.search-box input {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    font-size: 14px;
+    outline: none;
+    width: 200px;
+}
+
+.search-box button {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #555;
+}
+
+/* Login Button */
+.login-btn {
+    padding: 8px 16px;
+    background: #ff3c3c;
+    color: white;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+}
+
+.login-btn:hover {
+    background: #e62e2e;
+}
+
+  
+  /* Hero Section */
+  .hero {
+    text-align: center;
+    padding: 50px;
+    background: #f9f9f9;
+  }
+  
+  /* Services */
+  .services {
+    padding: 50px;
+    text-align: center;
+  }
+  
+  /* Events */
+  .events {
+    padding: 50px;
+  }
+  
+  .event-grid {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  .event-card {
+    padding: 20px;
+    background: #ddd;
+    border-radius: 5px;
+  }
+  
+  /* Testimonials */
+  .testimonials {
+    padding: 50px;
+    background: #f9f9f9;
+  }
+  
+  .testimonial-grid {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  /* Contact */
+  .contact {
+    text-align: center;
+    padding: 50px;
+  }
+  
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 20px;
+    background: #222;
+    color: white;
+  }
+  
