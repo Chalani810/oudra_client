@@ -2,22 +2,21 @@ import { FaFacebookF, FaTwitter, FaInstagram, FaYoutube } from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <footer className="bg-[#f1281a] text-white py-12">	
+    <footer className="bg-[#15b153] text-white py-12">	
       {/* Top Section */}
       <div className="max-w-7xl mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-5 gap-10">
         {/* Logo + tagline */}
         <div>
         <h1 className="text-3xl font-extrabold">
-        <span className="text-black">Gli</span>
-        <span className="text-white-600">mm</span>
-        <span className="text-black">er</span>
+        <span className="text-black">Ou</span>
+        <span className="text-white-600">dra</span>
        </h1>
           <p className="mt-4 text-white font-semibold leading-6">
-            Don’t Wait! <br />   It’s Time To Plan <br />
-            Unforgettable Events <br />
-            & Create 
-            Magical Moments That Last A Lifetime.
-          </p>
+            Discover how technology meets nature. <br />
+            Our Decision Support System integrates <br />
+            IoT, AI, and Blockchain to revolutionize <br />
+            agarwood cultivation for a sustainable future.
+           </p>
         </div>
 
         {/* About */}

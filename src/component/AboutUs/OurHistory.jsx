@@ -9,24 +9,44 @@ const OurHistory = () => {
         <div className="relative w-full md:w-1/2 flex justify-center">
           <img
             src={HistoryImage}
-            alt="Our History"
+            alt="Agarwood Research"
             className="w-80 h-96 object-cover rounded-lg"
           />
 
           <img
             src={HistorySmallImage}
-            alt="Our Milestones"
+            alt="Smart Cultivation"
             className="w-60 h-80 object-cover rounded-lg border-4 border-white shadow-xl absolute top-10 left-10"
           />
         </div>
 
         <div className="flex-1">
-          <h2 className="text-4xl font-bold mb-6">Our Journey</h2>
+          <h2 className="text-4xl font-bold mb-6">Our <span className="text-green-600">Research</span> Journey</h2>
           <p className="text-gray-600 leading-relaxed">
-            Since our founding, Glimmer has been dedicated to delivering
-            unforgettable moments. Our journey reflects growth, innovation, and
-            a commitment to excellence across every event and project we
-            undertake. Over the years, we have expanded our capabilities, grown our talented team, and embraced cutting-edge trends and technologies, all while staying true to the values that define us: creativity, collaboration, and excellence. Our journey is far from over, and as we continue to evolve, we remain focused on delivering experiences that captivate, inspire, and leave a lasting impact.
+            Agarwood — often called “liquid gold” — is one of the world’s most valuable natural
+            resources, used in perfumes, incense, and medicines. In Sri Lanka, Wallapatta
+            (Agarwood) cultivation has great potential, but traditional manual monitoring
+            methods cause data inaccuracy, disease risks, and yield loss.
+          </p>
+          <p className="text-gray-600 leading-relaxed mt-4">
+            Our research introduces an <strong>AI and IoT-based Decision Support System</strong> for
+            Agarwood cultivation. Smart sensor nodes monitor soil moisture, temperature,
+            humidity, and pH in real-time, while a backend analytics engine predicts growth
+            patterns and detects stress or fungal threats. Computer vision techniques are used
+            to identify resin-rich zones non-invasively, avoiding destructive testing.
+          </p>
+          <p className="text-gray-600 leading-relaxed mt-4">
+            To ensure full transparency and trust, every tree’s lifecycle is recorded on a
+            <strong> blockchain-backed digital certificate</strong>, providing traceability from seedling
+            to oud oil. Our web dashboard (built using the MERN stack) and mobile app empower
+            plantation managers and field workers with real-time insights, task alerts, and
+            automated data-driven decisions.
+          </p>
+          <p className="text-gray-600 leading-relaxed mt-4">
+            Successfully piloted at Pintanna Plantations’ Ayagama Estate, this system has
+            demonstrated higher yields, improved efficiency, and full supply chain visibility.
+            Our vision is to make Sri Lanka a leader in sustainable, technology-driven
+            Agarwood cultivation — setting a global model for smart agriculture.
           </p>
         </div>
       </div>

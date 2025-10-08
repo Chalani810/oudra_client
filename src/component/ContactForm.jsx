@@ -12,11 +12,9 @@ const ContactForm = () => {
   });
 
   const servicesList = [
-    'Wedding Planning',
-    'Co-Operate Event',
-    'Proposal Event',
-    'Anniversary Party',
-    'Birthday Party',
+    'User',
+    'Researcher',
+    'Investor',
     'Other',
   ];
 
@@ -81,7 +79,7 @@ const ContactForm = () => {
       });
 
       if (response.ok) {
-        alert("Your message has been sent!");
+        alert("Thank you for reaching out! We’ll get back to you shortly.");
         setForm(prev => ({
           ...prev,
           message: '',
@@ -98,8 +96,11 @@ const ContactForm = () => {
 
   return (
     <form onSubmit={handleSubmit} className="max-w-xl mx-auto p-6 bg-white shadow-md rounded-lg m-5">
-      <h2 className="text-2xl font-bold text-center mb-2">Get In Touch</h2>
-      <p className="text-center text-gray-500 mb-6">We'll Get Back To You Within 24 Hours</p>
+      <h2 className="text-2xl font-bold text-center mb-2">Contact Our Team</h2>
+      <p className="text-center text-gray-500 mb-6">
+        Have questions or want to collaborate on sustainable agarwood cultivation? 
+        Send us a message and our team will respond soon.
+      </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
         <input
@@ -125,7 +126,7 @@ const ContactForm = () => {
       <input
         type="email"
         name="email"
-        placeholder="you@company.com"
+        placeholder="you@example.com"
         value={form.email}
         onChange={handleChange}
         className="w-full border p-2 rounded mb-4"
@@ -135,7 +136,7 @@ const ContactForm = () => {
       <input
         type="tel"
         name="phone"
-        placeholder="LK, +94 70 000 0000"
+        placeholder="+94 70 000 0000"
         value={form.phone}
         onChange={handleChange}
         className="w-full border p-2 rounded mb-4"
@@ -145,7 +146,7 @@ const ContactForm = () => {
       <textarea
         name="message"
         rows="4"
-        placeholder="Leave us a message..."
+        placeholder="Type your message here..."
         value={form.message}
         onChange={handleChange}
         className="w-full border p-2 rounded mb-4"
@@ -153,7 +154,7 @@ const ContactForm = () => {
       />
 
       <div className="mb-4">
-        <label className="block font-semibold mb-2">Services</label>
+        <label className="block font-semibold mb-2">I am a...</label>
         <div className="grid grid-cols-2 gap-2">
           {servicesList.map((service) => (
             <label key={service} className="flex items-center space-x-2">
@@ -163,7 +164,7 @@ const ContactForm = () => {
                 value={service}
                 checked={form.services.includes(service)}
                 onChange={handleChange}
-                className="accent-red-500"
+                className="accent-green-600"
               />
               <span>{service}</span>
             </label>
@@ -171,8 +172,8 @@ const ContactForm = () => {
         </div>
       </div>
 
-      <button type="submit" className="w-full bg-red-500 text-white py-2 rounded hover:bg-red-600">
-        Send Message
+      <button type="submit" className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700">
+        Submit
       </button>
     </form>
   );
