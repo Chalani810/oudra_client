@@ -53,34 +53,33 @@ const Header = () => {
     <header className="bg-white shadow-sm py-4 px-8 flex items-center justify-between relative">
       {/* Left: Logo */}
       <div className="text-2xl font-extrabold">
-        <span className="text-black">Gli</span>
-        <span className="text-red-600">mm</span>
-        <span className="text-black">er</span>
+        <span className="text-black">Ou</span>
+        <span className="text-green-600">dra</span>
       </div>
 
       {/* Center: Navigation */}
       <nav className="space-x-8 font-semibold hidden md:flex">
         <Link
           to="/"
-          className={`text-black hover:text-red-600 ${
-            isActive("/") ? "text-red-600" : ""
+          className={`text-black hover:text-green-600 ${
+            isActive("/") ? "text-green-600" : ""
           }`}
         >
           Home
         </Link>
         <Link
           to="/customerviewevent"
-          className={`text-black hover:text-red-600 ${
-            isActive("/customerviewevent") ? "text-red-600" : ""
+          className={`text-black hover:text-green-600 ${
+            isActive("/customerviewevent") ? "text-green-600" : ""
           }`}
         >
-          Events
+          Value
         </Link>
         {isLoggedIn && (
           <Link
             to={`/orders/${user._id}`}
-            className={`text-black hover:text-red-600 ${
-              isActive(`/orders/${user._id}`) ? "text-red-600" : ""
+            className={`text-black hover:text-green-600 ${
+              isActive(`/orders/${user._id}`) ? "text-green-600" : ""
             }`}
           >
             Order History
@@ -88,16 +87,16 @@ const Header = () => {
         )}
         <Link
           to="/AboutUs"
-          className={`text-black hover:text-red-600 ${
-            isActive("/AboutUs") ? "text-red-600" : ""
+          className={`text-black hover:text-green-600 ${
+            isActive("/AboutUs") ? "text-green-600" : ""
           }`}
         >
           About Us
         </Link>
         <Link
           to="/contactUs"
-          className={`text-black hover:text-red-600 ${
-            isActive("/contactUs") ? "text-red-600" : ""
+          className={`text-black hover:text-green-600 ${
+            isActive("/contactUs") ? "text-green-600" : ""
           }`}
         >
           Contact Us
@@ -110,7 +109,7 @@ const Header = () => {
         <div className="relative">
           <Link to="/cart">
             <FiShoppingCart className="text-2xl" />
-            <span className="absolute top-0 right-0 h-2 w-2 bg-red-600 rounded-full"></span>
+            <span className="absolute top-0 right-0 h-2 w-2 bg-green-600 rounded-full"></span>
           </Link>
         </div>
 
@@ -123,7 +122,7 @@ const Header = () => {
               </button>
             </Link>
             <Link to="/signin">
-              <button className="bg-red-600 text-white px-4 py-1 rounded-full text-sm font-medium hover:bg-red-700">
+              <button className="bg-green-600 text-white px-4 py-1 rounded-full text-sm font-medium hover:bg-green-700">
                 Sign In
               </button>
             </Link>
@@ -151,7 +150,7 @@ const Header = () => {
                 <Link
                   to="/customerprofile"
                   className={`block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ${
-                    isActive("/customerprofile") ? "text-red-600" : ""
+                    isActive("/customerprofile") ? "text-grren-600" : ""
                   }`}
                   onClick={() => setShowProfileMenu(false)}
                 >

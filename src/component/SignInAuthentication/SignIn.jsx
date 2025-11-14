@@ -56,7 +56,7 @@ const SignIn = () => {
         </p>
 
         {error && (
-          <div className="mb-4 p-2 bg-red-100 text-red-600 text-sm rounded">
+          <div className="mb-4 p-2 bg-green-100 text-green-600 text-sm rounded">
             {error}
           </div>
         )}
@@ -69,7 +69,7 @@ const SignIn = () => {
             id="email"
             type="email"
             placeholder="Enter your email address"
-            className="w-full px-4 py-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-400"
+            className="w-full px-4 py-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -87,7 +87,7 @@ const SignIn = () => {
               id="password"
               type={showPassword ? "text" : "password"}
               placeholder="********"
-              className="w-full px-4 py-2 mb-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-400"
+              className="w-full px-4 py-2 mb-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -143,14 +143,14 @@ const SignIn = () => {
               <input type="checkbox" className="mr-2" />
               Remember
             </label>
-            <a href="/forgot-password" className="text-red-500 hover:underline">
+            <a href="/forgot-password" className="text-green-500 hover:underline">
               Forgot Password?
             </a>
           </div>
 
           <button
             type="submit"
-            className="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-md transition-colors disabled:opacity-50"
+            className="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-md transition-colors disabled:opacity-50"
             disabled={loading}
           >
             {loading ? "Signing In..." : "Sign In"}
@@ -161,7 +161,7 @@ const SignIn = () => {
           Don't have an account?{" "}
           <a
             href="/signup"
-            className="text-red-600 font-semibold hover:underline"
+            className="text-green-600 font-semibold hover:underline"
           >
             Sign Up
           </a>
