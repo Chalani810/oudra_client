@@ -1,8 +1,8 @@
 import React from 'react';
-import image5 from '../../component/HomePage/image5.jpg';
-import image32 from '../../component/HomePage/image32.jpg';
+import image5 from '../../component/HomePage/image46.jpg';
+import image32 from '../../component/HomePage/image30.png';
 import image31 from '../../component/HomePage/image31.jpg';
-import image35 from '../../component/HomePage/image35.jpg';
+import image35 from '../../component/HomePage/image10.webp';
 import { Link } from 'react-router-dom';
 
 const events = [

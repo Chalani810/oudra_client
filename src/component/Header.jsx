@@ -73,7 +73,7 @@ const Header = () => {
             isActive("/customerviewevent") ? "text-green-600" : ""
           }`}
         >
-          Events
+          Value
         </Link>
         {isLoggedIn && (
           <Link

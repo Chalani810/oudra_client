@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import image45 from '../../component/HomePage/image45.jpeg';
+import image45 from '../../component/HomePage/image45.jpg';
 import image23 from '../../component/HomePage/image23.jpg';
 import image25 from '../../component/HomePage/image25.jpg';
-import image16 from '../../component/HomePage/image16.jpeg';
+import image16 from '../../component/HomePage/image16.jpg';
 
 const HeroSection = () => {
   return (

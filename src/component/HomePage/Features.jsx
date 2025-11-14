@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import cateringImg from '../../component/HomePage/image30.jpg';
-import planningImg from '../../component/HomePage/image37.jpg';
-import venueImg from '../../component/HomePage/image10.jpg';
+import cateringImg from '../../component/HomePage/image46.jpg';
+import planningImg from '../../component/HomePage/image30.png';
+import venueImg from '../../component/HomePage/image10.webp';
 import audiovisual from '../../component/HomePage/image38.jpg';
 import lightning from '../../component/HomePage/image39.jpg';
 import tentcanopy from '../../component/HomePage/image40.jpg';
-import tableglassware from '../../component/HomePage/image41.jpg';
+import tableglassware from '../../component/HomePage/image30.png';
 import floorstaging from '../../component/HomePage/image42.jpg';
 import heatingcooling from '../../component/HomePage/image43.jpg';
 import photobooth from '../../component/HomePage/image44.jpg';

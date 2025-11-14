@@ -37,7 +37,7 @@ const Footer = () => {
             <li>Feedback</li>
             <li>Contact Us</li>
             <li>
-               <a href="mailto:glimmer.infomail@gmail.com">glimmer.infomail@gmail.com</a>
+               <a href="mailto:glimmer.infomail@gmail.com">oudra.infomail@gmail.com</a>
             </li>
             <li>Terms of Service</li>
           </ul>
@@ -47,7 +47,7 @@ const Footer = () => {
         <div>
           <h2 className="text-lg font-bold text-black mb-3">Find Us</h2>
           <ul className="space-y-1 text-white">
-            <li>Events</li>
+            <li>Investments</li>
             <li>Locations</li>
             <li>Newsletter</li>
           </ul>
@@ -57,7 +57,7 @@ const Footer = () => {
         <div>
           <h2 className="text-lg font-bold text-black mb-3">Address</h2>
           <p className="text-white">
-            Glimmer Events <br />
+            Oudra <br />
             1B 28th Lane <br />
             Flower Road<br />
             Colombo 7<br />

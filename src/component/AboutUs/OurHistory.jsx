@@ -1,6 +1,6 @@
 import React from "react";
-import HistoryImage from "../../assets/our-history.jpeg"; // Main background image
-import HistorySmallImage from "../../assets/our-journey.jpeg"; // Small overlapping image
+import HistoryImage from "../../assets/our-history.jpg"; // Main background image
+import HistorySmallImage from "../../assets/our-journey.jpg"; // Small overlapping image
 
 const OurHistory = () => {
   return (
