@@ -261,7 +261,7 @@ const SignUpForm = () => {
       </p>
 
       {error && (
-        <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-md">
+        <div className="mb-4 p-3 bg-green-100 text-green-700 rounded-md">
           {error}
         </div>
       )}
@@ -279,13 +279,13 @@ const SignUpForm = () => {
             onBlur={handleBlur}
             className={`w-full border rounded-md p-2 outline-none focus:ring-2 ${
               fieldErrors.firstName && touchedFields.firstName 
-                ? 'border-red-500 focus:ring-red-400' 
-                : 'focus:ring-red-400'
+                ? 'border-green-500 focus:ring-red-400' 
+                : 'focus:ring-green-400'
             }`}
             required
           />
           {fieldErrors.firstName && touchedFields.firstName && (
-            <p className="text-red-500 text-sm mt-1">{fieldErrors.firstName}</p>
+            <p className="text-green-500 text-sm mt-1">{fieldErrors.firstName}</p>
           )}
         </div>
 
@@ -301,13 +301,13 @@ const SignUpForm = () => {
             onBlur={handleBlur}
             className={`w-full border rounded-md p-2 outline-none focus:ring-2 ${
               fieldErrors.lastName && touchedFields.lastName 
-                ? 'border-red-500 focus:ring-red-400' 
-                : 'focus:ring-red-400'
+                ? 'border-green-500 focus:ring-red-400' 
+                : 'focus:ring-green-400'
             }`}
             required
           />
           {fieldErrors.lastName && touchedFields.lastName && (
-            <p className="text-red-500 text-sm mt-1">{fieldErrors.lastName}</p>
+            <p className="text-green-500 text-sm mt-1">{fieldErrors.lastName}</p>
           )}
         </div>
 
@@ -323,13 +323,13 @@ const SignUpForm = () => {
             onBlur={handleBlur}
             className={`w-full border rounded-md p-2 outline-none focus:ring-2 ${
               fieldErrors.email && touchedFields.email 
-                ? 'border-red-500 focus:ring-red-400' 
-                : 'focus:ring-red-400'
+                ? 'border-green-500 focus:ring-green-400' 
+                : 'focus:ring-green-400'
             }`}
             required
           />
           {fieldErrors.email && touchedFields.email && (
-            <p className="text-red-500 text-sm mt-1">{fieldErrors.email}</p>
+            <p className="text-green-500 text-sm mt-1">{fieldErrors.email}</p>
           )}
         </div>
 
@@ -345,13 +345,13 @@ const SignUpForm = () => {
             onBlur={handleBlur}
             className={`w-full border rounded-md p-2 outline-none focus:ring-2 ${
               fieldErrors.phone && touchedFields.phone 
-                ? 'border-red-500 focus:ring-red-400' 
-                : 'focus:ring-red-400'
+                ? 'border-green-500 focus:ring-green-400' 
+                : 'focus:ring-green-400'
             }`}
             required
           />
           {fieldErrors.phone && touchedFields.phone && (
-            <p className="text-red-500 text-sm mt-1">{fieldErrors.phone}</p>
+            <p className="text-green-500 text-sm mt-1">{fieldErrors.phone}</p>
           )}
         </div>
 
@@ -368,14 +368,14 @@ const SignUpForm = () => {
               onBlur={handleBlur}
               className={`w-full border rounded-md p-2 outline-none focus:ring-2 ${
                 fieldErrors.password && touchedFields.password 
-                  ? 'border-red-500 focus:ring-red-400' 
-                  : 'focus:ring-red-400'
+                  ? 'border-green-500 focus:ring-green-400' 
+                  : 'focus:ring-green-400'
               }`}
               required
               minLength="8"
             />
             {fieldErrors.password && touchedFields.password && (
-              <p className="text-red-500 text-sm mt-1">{fieldErrors.password}</p>
+              <p className="text-green-500 text-sm mt-1">{fieldErrors.password}</p>
             )}
           </div>
 
@@ -391,13 +391,13 @@ const SignUpForm = () => {
               onBlur={handleBlur}
               className={`w-full border rounded-md p-2 outline-none focus:ring-2 ${
                 fieldErrors.confirmPassword && touchedFields.confirmPassword 
-                  ? 'border-red-500 focus:ring-red-400' 
-                  : 'focus:ring-red-400'
+                  ? 'border-green-500 focus:ring-green-400' 
+                  : 'focus:ring-green-400'
               }`}
               required
             />
             {fieldErrors.confirmPassword && touchedFields.confirmPassword && (
-              <p className="text-red-500 text-sm mt-1">{fieldErrors.confirmPassword}</p>
+              <p className="text-green-500 text-sm mt-1">{fieldErrors.confirmPassword}</p>
             )}
           </div>
         </div>
@@ -414,13 +414,13 @@ const SignUpForm = () => {
             onBlur={handleBlur}
             className={`w-full border rounded-md p-2 outline-none focus:ring-2 ${
               fieldErrors.street && touchedFields.street 
-                ? 'border-red-500 focus:ring-red-400' 
-                : 'focus:ring-red-400'
+                ? 'border-green-500 focus:ring-green-400' 
+                : 'focus:ring-green-400'
             }`}
             required
           />
           {fieldErrors.street && touchedFields.street && (
-            <p className="text-red-500 text-sm mt-1">{fieldErrors.street}</p>
+            <p className="text-green-500 text-sm mt-1">{fieldErrors.street}</p>
           )}
         </div>
 
@@ -436,13 +436,13 @@ const SignUpForm = () => {
               onBlur={handleBlur}
               className={`w-full border rounded-md p-2 outline-none focus:ring-2 ${
                 fieldErrors.city && touchedFields.city 
-                  ? 'border-red-500 focus:ring-red-400' 
-                  : 'focus:ring-red-400'
+                  ? 'border-green-500 focus:ring-green-400' 
+                  : 'focus:ring-green-400'
               }`}
               required
             />
             {fieldErrors.city && touchedFields.city && (
-              <p className="text-red-500 text-sm mt-1">{fieldErrors.city}</p>
+              <p className="text-green-500 text-sm mt-1">{fieldErrors.city}</p>
             )}
           </div>
           <div>
@@ -456,13 +456,13 @@ const SignUpForm = () => {
               onBlur={handleBlur}
               className={`w-full border rounded-md p-2 outline-none focus:ring-2 ${
                 fieldErrors.postalCode && touchedFields.postalCode 
-                  ? 'border-red-500 focus:ring-red-400' 
-                  : 'focus:ring-red-400'
+                  ? 'border-green-500 focus:ring-green-400' 
+                  : 'focus:ring-green-400'
               }`}
               required
             />
             {fieldErrors.postalCode && touchedFields.postalCode && (
-              <p className="text-red-500 text-sm mt-1">{fieldErrors.postalCode}</p>
+              <p className="text-green-500 text-sm mt-1">{fieldErrors.postalCode}</p>
             )}
           </div>
           <div>
@@ -476,13 +476,13 @@ const SignUpForm = () => {
               onBlur={handleBlur}
               className={`w-full border rounded-md p-2 outline-none focus:ring-2 ${
                 fieldErrors.country && touchedFields.country 
-                  ? 'border-red-500 focus:ring-red-400' 
-                  : 'focus:ring-red-400'
+                  ? 'border-green-500 focus:ring-green-400' 
+                  : 'focus:ring-green-400'
               }`}
               required
             />
             {fieldErrors.country && touchedFields.country && (
-              <p className="text-red-500 text-sm mt-1">{fieldErrors.country}</p>
+              <p className="text-green-500 text-sm mt-1">{fieldErrors.country}</p>
             )}
           </div>
         </div>
@@ -514,7 +514,7 @@ const SignUpForm = () => {
             onBlur={handleBlur}
             className={`mt-1 mr-2 ${
               fieldErrors.agreeToTerms && touchedFields.agreeToTerms 
-                ? 'border-red-500' 
+                ? 'border-green-500' 
                 : ''
             }`}
             required
@@ -540,14 +540,14 @@ const SignUpForm = () => {
             </a>
           </p>
           {fieldErrors.agreeToTerms && touchedFields.agreeToTerms && (
-            <p className="text-red-500 text-sm mt-1">{fieldErrors.agreeToTerms}</p>
+            <p className="text-green-500 text-sm mt-1">{fieldErrors.agreeToTerms}</p>
           )}
         </div>
 
         {/* Sign Up Button */}
         <button
           type="submit"
-          className="w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded-md font-semibold transition duration-300 disabled:opacity-50"
+          className="w-full bg-green-500 hover:bg-green-600 text-white py-2 rounded-md font-semibold transition duration-300 disabled:opacity-50"
           disabled={loading || !isFormValid()}
         >
           {loading ? (
@@ -569,7 +569,7 @@ const SignUpForm = () => {
           <button
             type="button"
             onClick={handleSignInRedirect}
-            className="text-red-500 font-semibold hover:underline focus:outline-none"
+            className="text-green-500 font-semibold hover:underline focus:outline-none"
           >
             Sign In
           </button>

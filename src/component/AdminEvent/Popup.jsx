@@ -8,7 +8,7 @@ const Popup = ({ closePopup, children }) => {
           <h2 className="text-xl font-bold">New Event</h2>
           <button
             onClick={closePopup}
-            className="text-red-500 font-bold hover:text-red-700"
+            className="text-green-500 font-bold hover:text-green-700"
           >
             ×
           </button>

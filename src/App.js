@@ -12,7 +12,6 @@ import "./index.css";
 // Global components
 import Header from "./component/Header";
 import Footer from "./component/Footer";
-import AdminNavbar from "./component/AdminEvent/Navbar";
 import AdminRoute from "./component/AdminRoute";
 import UserRoute from "./component/UserRoute";
 
@@ -24,10 +23,9 @@ import AdminBills from "./pages/AdminBills";
 
 // Customer Management Components
 import CustomerMgtPage from "./pages/CustomerMgtPage";
-import CustomerTable from "./component/CustomerMgt/CustomerTable";
 
 // Employee Management
-import EmployeeManagement from "./pages/EmployeeManagement";
+import CertificateCard from "./pages/CertificateCard";
 import Dashboard from "./pages/Dashboard";
 import SalaryView from "./pages/EmployeePayroll";
 
@@ -68,9 +66,15 @@ function AppWithRoutes() {
     location.pathname === "/adminevents" ||
     location.pathname === "/adminaddevent";
   const isCustomerAdminPage = location.pathname === "/customers";
-  const isPasswordResetPage = location.pathname.startsWith("/forgot-password");
-
   const userData = JSON.parse(localStorage.getItem("user"));
+
+  // Header/Footer rendering condition
+  const hideHeaderFooter =
+    location.pathname.startsWith("/admin") ||
+    location.pathname === "/dashboard" ||
+    location.pathname === "/employee-payroll" ||
+    location.pathname === "/settings" ||
+    location.pathname === "/CertificateCard";
 
   return (
     <>
@@ -78,202 +82,70 @@ function AppWithRoutes() {
         position="top-center"
         toastOptions={{
           duration: 4000,
-          style: {
-            background: "#fff",
-            color: "#363636",
-          },
-          success: {
-            duration: 3000,
-            iconTheme: {
-              primary: "#4BB543",
-              secondary: "#fff",
-            },
-          },
-          error: {
-            duration: 4000,
-            iconTheme: {
-              primary: "#FF3333",
-              secondary: "#fff",
-            },
-          },
-          loading: {
-            duration: 5000,
-          },
+          style: { background: "#fff", color: "#363636" },
+          success: { duration: 3000, iconTheme: { primary: "#4BB543", secondary: "#fff" } },
+          error: { duration: 4000, iconTheme: { primary: "#FF3333", secondary: "#fff" } },
+          loading: { duration: 5000 },
         }}
       />
-      {location.pathname !== "/adminEvents" &&
-        location.pathname !== "/AdminAddEvent" &&
-        location.pathname !== "/AdminProduct" &&
-        location.pathname !== "/AdminProduct" &&
-        location.pathname !== "/EmployeeManagement" &&
-        location.pathname !== "/admin-bills" &&
-        location.pathname !== "/employee-payroll" &&
-        location.pathname !== "/EmployeeManagement" &&
-        location.pathname !== "/dashboard" &&
-        location.pathname !== "/settings" &&
-        !isEventAdminPage &&
-        !isCustomerAdminPage && <Header />}
+      {!hideHeaderFooter && <Header />}
 
       <Routes>
+        {/* Admin Routes */}
+        <Route path="/adminevents" element={<AdminRoute><AdminEvents /></AdminRoute>} />
+        <Route path="/adminaddevent" element={<AdminRoute><AdminAddEvent /></AdminRoute>} />
+        <Route path="/adminproduct" element={<AdminRoute><AdminProduct /></AdminRoute>} />
+        <Route path="/admin-bills" element={<AdminRoute><AdminBills /></AdminRoute>} />
         <Route
-          path="/adminEvents"
+          path="/CertificateCard"
           element={
             <AdminRoute>
-              <AdminEvents />
+              <CertificateCard
+                certificate={{
+                  _id: "CERT123",
+                  treeId: "TR-001",
+                  owner: "John Doe",
+                  species: "Aquilaria Malaccensis",
+                  plantingDate: "2022-05-10",
+                  status: "Approved",
+                  resinQuality: "A",
+                  resinYield: 25,
+                  gpsCoordinates: { latitude: 7.8731, longitude: 80.7718 },
+                }}
+                showActions={true}
+              />
             </AdminRoute>
           }
         />
-        <Route
-          path="/adminproduct"
-          element={
-            <AdminRoute>
-              <AdminProduct />
-            </AdminRoute>
-          }
-        />
-        <Route
-          path="/admin-bills"
-          element={
-            <AdminRoute>
-              <AdminBills />
-            </AdminRoute>
-          }
-        />
-        <Route
-          path="/employeeManagement"
-          element={
-            <AdminRoute>
-              <EmployeeManagement />
-            </AdminRoute>
-          }
-        />
-        <Route
-          path="/employee-payroll"
-          element={
-            <AdminRoute>
-              <SalaryView />
-            </AdminRoute>
-          }
-        />
-        <Route
-          path="/dashboard"
-          element={
-            <AdminRoute>
-              <Dashboard />
-            </AdminRoute>
-          }
-        />
-        <Route
-          path="/customers"
-          element={
-            <AdminRoute>
-              <CustomerMgtPage />
-            </AdminRoute>
-          }
-        />
-        <Route
-          path="/settings"
-          element={
-            <AdminRoute>
-              <SettingsPage />
-            </AdminRoute>
-          }
-        />
+        <Route path="/employee-payroll" element={<AdminRoute><SalaryView /></AdminRoute>} />
+        <Route path="/dashboard" element={<AdminRoute><Dashboard /></AdminRoute>} />
+        <Route path="/customers" element={<AdminRoute><CustomerMgtPage /></AdminRoute>} />
+        <Route path="/settings" element={<AdminRoute><SettingsPage /></AdminRoute>} />
 
+        {/* User Routes */}
+        <Route path="/customerprofile" element={<UserRoute><ProfilePage /></UserRoute>} />
+        <Route path="/cart" element={<UserRoute><Cart /></UserRoute>} />
+        <Route path="/checkout" element={<UserRoute><Checkout /></UserRoute>} />
+        <Route path="/invoice" element={<UserRoute><Invoice /></UserRoute>} />
+        <Route path="/feedback" element={<UserRoute><FeedbackListPage /></UserRoute>} />
 
+        {/* Public / Mixed Routes */}
         <Route path="/feedback" element={<FeedbackPage />} />
         <Route path="/orders/:userId" element={<OrderHistory />} />
-
         <Route path="/customerviewevent" element={<CustomerViewEvent />} />
-        <Route
-          path="/customerproduct/:eventId/:eventName?"
-          element={<CustomerProduct />}
-        />
-
-        <Route
-          path="/customerprofile"
-          element={
-            <UserRoute>
-              <ProfilePage />
-            </UserRoute>
-          }
-        />
-        <Route
-          path="/cart"
-          element={
-            <UserRoute>
-              <Cart />
-            </UserRoute>
-          }
-        />
-        <Route
-          path="/checkout"
-          element={
-            <UserRoute>
-              <Checkout />
-            </UserRoute>
-          }
-        />
-  <Route
-          path="/invoice"
-          element={
-            <UserRoute>
-              <Invoice />
-            </UserRoute>
-          }
-        />
-        <Route
-          path="/feedback"
-          element={
-            <UserRoute>
-              <FeedbackListPage />
-            </UserRoute>
-          }
-        />
-
-        <Route
-          path="/signup"
-          element={
-            !userData ? (
-              <SignUpPage />
-            ) : userData?.role == "user" ? (
-              <Navigate to="/" />
-            ) : (
-              <Navigate to="/dashboard" />
-            )
-          }
-        />
-        <Route
-          path="/signin"
-          element={
-            !userData ? (
-              <LoginPage />
-            ) : userData?.role == "user" ? (
-              <Navigate to="/" />
-            ) : (
-              <Navigate to="/dashboard" />
-            )
-          }
-        />
-
+        <Route path="/customerproduct/:eventId/:eventName?" element={<CustomerProduct />} />
+        <Route path="/signup" element={!userData ? <SignUpPage /> : userData.role === "user" ? <Navigate to="/" /> : <Navigate to="/dashboard" />} />
+        <Route path="/signin" element={!userData ? <LoginPage /> : userData.role === "user" ? <Navigate to="/" /> : <Navigate to="/dashboard" />} />
         <Route path="/forgot-password/*" element={<ForgotPasswordPage />} />
         <Route path="/reset-password/:token" element={<ResetPasswordForm />} />
-
         <Route path="/" element={<HomePage />} />
         <Route path="/aboutus" element={<AboutUs />} />
         <Route path="/contactus" element={<ContactUs />} />
       </Routes>
-      {location.pathname !== "/admin-bills" &&
-        location.pathname !== "/adminEvents" &&
-        location.pathname !== "/AdminAddEvent" &&
-        location.pathname !== "/AdminProduct" &&
-        location.pathname !== "/EmployeeManagement" &&
-        location.pathname !== "/employee-payroll" &&
-        location.pathname !== "/dashboard" &&
-        location.pathname !== "/settings" &&
-        !isEventAdminPage &&
-        !isCustomerAdminPage && <Footer />}
+
+      {!hideHeaderFooter && <Footer />}
     </>
   );
 }
+
 export default App;

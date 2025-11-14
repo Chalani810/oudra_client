@@ -87,7 +87,7 @@ const Testimonials = () => {
       <section className="py-16 px-6 bg-gray-100">
         <div className="max-w-6xl mx-auto text-center">
           <h2 className="text-4xl font-bold mb-12">
-            What People Say About Glimmer
+            What People Say About Oudra
           </h2>
           <p>Loading testimonials...</p>
         </div>
@@ -100,9 +100,9 @@ const Testimonials = () => {
       <section className="py-16 px-6 bg-gray-100">
         <div className="max-w-6xl mx-auto text-center">
           <h2 className="text-4xl font-bold mb-12">
-            What People Say About Glimmer
+            What People Say About Oudra
           </h2>
-          <p className="text-red-500">{error}</p>
+          <p className="text-green-500">{error}</p>
         </div>
       </section>
     );
@@ -113,7 +113,7 @@ const Testimonials = () => {
       <section className="py-16 px-6 bg-gray-100">
         <div className="max-w-6xl mx-auto text-center">
           <h2 className="text-4xl font-bold mb-12">
-            What People Say About Glimmer
+            What People Say About Oudra
           </h2>
           <p>No testimonials available yet.</p>
         </div>
@@ -134,7 +134,7 @@ const Testimonials = () => {
           viewport={{ once: true }}
           className="text-4xl font-bold mb-12"
         >
-          What People Say About Glimmer
+          What People Say About Oudra
         </motion.h2>
 
         <div className="relative flex items-center justify-center">
