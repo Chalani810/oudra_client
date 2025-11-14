@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import cateringImg from '../../component/HomePage/image30.jpg';
-import planningImg from '../../component/HomePage/image37.jpg';
-import venueImg from '../../component/HomePage/image10.jpg';
+import cateringImg from '../../component/HomePage/image46.jpg';
+import planningImg from '../../component/HomePage/image30.png';
+import venueImg from '../../component/HomePage/image10.webp';
 import audiovisual from '../../component/HomePage/image38.jpg';
 import lightning from '../../component/HomePage/image39.jpg';
 import tentcanopy from '../../component/HomePage/image40.jpg';
-import tableglassware from '../../component/HomePage/image41.jpg';
+import tableglassware from '../../component/HomePage/image30.png';
 import floorstaging from '../../component/HomePage/image42.jpg';
 import heatingcooling from '../../component/HomePage/image43.jpg';
 import photobooth from '../../component/HomePage/image44.jpg';
@@ -14,64 +14,62 @@ import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
 const Features = () => {
 
-  // All rental items
   const allFeatures = [
     {
-      title: "Best Catering Equipments & Tools",
-      description: "From elegant serving sets to essential kitchen gear, we provide premium catering tools to elevate every event.",
+      title: "IoT-Based Smart Monitoring",
+      description: "Each agarwood tree is equipped with a smart sensor node that measures soil moisture, temperature, humidity, and pH to track real-time growth conditions.",
       image: cateringImg,
     },
     {
-      title: "Event Essentials & Furniture Rentals",
-      description: "Create the perfect setting with our curated collection of event furniture and essentials, designed for comfort and style.",
+      title: "AI-Powered Resin Detection",
+      description: "Our AI model uses image analysis to identify resin-rich zones without cutting into the tree—ensuring a non-invasive, sustainable cultivation process.",
       image: planningImg,
     },
     {
-      title: "Stylish Event Decor Rentals",
-      description: "Add charm and character to your celebration with our thoughtfully selected decor pieces from lanterns to luxe carpets.",
+      title: "Blockchain Traceability System",
+      description: "Every tree’s lifecycle data—from planting to harvest—is securely recorded on a blockchain, enabling transparent tracking and authenticity verification.",
       image: venueImg,
     },
     {
-      title: "Premium Audio & Visual Equipment",
-      description: "Ensure crystal-clear sound and stunning visuals with our high-quality microphones, speakers, projectors, and screens for any event size.",
+      title: "Data Visualization Dashboard",
+      description: "A cloud-based dashboard built with MERN stack provides visual insights, sensor data charts, and alerts for managers to make quick, data-driven decisions.",
       image: audiovisual, 
     },
     {
-      title: "Professional Lighting Solutions",
-      description: "Set the perfect mood with our versatile lighting options, including uplighting, stage lighting, and ambient decorative lights.",
+      title: "Automated Field Task Alerts",
+      description: "The system automatically sends real-time alerts and task notifications to field workers through a connected mobile app when irregularities are detected.",
       image: lightning, 
     },
     {
-      title: "Tent & Canopy Rentals",
-      description: "Protect your guests from the elements with our durable and stylish tents and canopies, perfect for outdoor occasions.",
+      title: "Sustainable Cultivation Support",
+      description: "By analyzing environmental conditions, the system optimizes irrigation, fertilizer usage, and disease prevention, promoting eco-friendly agarwood growth.",
       image: tentcanopy, 
     },
     {
-      title: "Tableware & Glassware Collections",
-      description: "Serve with elegance using our range of plates, cutlery, glassware, and table accessories for any event theme or size.",
+      title: "Research & Pilot Deployment",
+      description: "The system has been successfully tested at Pintanna’s Ayagama Estate, showing improved resin yield, early disease detection, and efficient data handling.",
       image: tableglassware,
     },
     {
-      title: "Dance Floors & Staging Rentals",
-      description: "Make your event unforgettable with customizable dance floors and sturdy stage setups for performances, speeches, or ceremonies.",
+      title: "Real-Time Decision Support",
+      description: "The platform provides predictive analytics for growth patterns, enabling managers to plan harvests and resource allocation more efficiently.",
       image: floorstaging,
     },
     {
-      title: "Heating & Cooling Equipment",
-      description: "Keep guests comfortable year-round with our portable heaters, fans, and air coolers tailored to your venue needs.",
+      title: "Mobile App for Field Operations",
+      description: "Built with React Native, the mobile app allows workers to receive live instructions, upload field images, and sync sensor data with the cloud in real time.",
       image: heatingcooling, 
     },
     {
-      title: "Photo Booths & Backdrops",
-      description: "Add fun and capture memories with our interactive photo booths and stylish backdrops, ideal for weddings and parties.",
+      title: "Transparent Supply Chain",
+      description: "Buyers and regulators can verify product origin, quality, and history through blockchain certificates—ensuring trust from plantation to market.",
       image: photobooth, 
     },
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
-  const itemsPerPage = 3; // Number of items to show at once
+  const itemsPerPage = 3;
 
-  // Calculate the current items to display
   const currentFeatures = allFeatures.slice(currentIndex, currentIndex + itemsPerPage);
 
   const nextSlide = () => {
@@ -89,20 +87,20 @@ const Features = () => {
   return (
     <section className="px-8 py-8 bg-gray-50">
       <div className="text-center mb-12">
-        <h2 className="text-3xl font-bold">Welcome To <span className="text-red-500">Glimmer Events!</span></h2>
+        <h2 className="text-3xl font-bold">
+          Explore the <span className="text-green-600">Oudra Features</span>
+        </h2>
       </div>
       
       <div className="relative flex items-center justify-center">
-        {/* Left arrow */}
         <button 
           onClick={prevSlide}
-          className="absolute left-0 z-10 p-2 text-red-700 hover:text-red-500 focus:outline-none"
+          className="absolute left-0 z-10 p-2 text-green-700 hover:text-green-500 focus:outline-none"
           aria-label="Previous items"
         >
           <FaChevronLeft size={24} />
         </button>
         
-        {/* Items container */}
         <div className="flex flex-col md:flex-row gap-8 justify-center w-full">
           {currentFeatures.map((feature, idx) => (
             <div key={idx} className="max-w-sm p-6 bg-white rounded-lg shadow-md text-center">
@@ -116,11 +114,10 @@ const Features = () => {
             </div>
           ))}
         </div>
-        
-        {/* Right arrow */}
+
         <button 
           onClick={nextSlide}
-          className="absolute right-0 z-10 p-2 text-red-700 hover:text-red-500 focus:outline-none"
+          className="absolute right-0 z-10 p-2 text-green-700 hover:text-green-500 focus:outline-none"
           aria-label="Next items"
         >
           <FaChevronRight size={24} />

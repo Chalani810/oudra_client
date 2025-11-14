@@ -6,7 +6,7 @@ const Sidebar = () => {
     <aside className="w-64 bg-white p-4 border-r hidden md:block">
       {/* Logo */}
       <div className="text-2xl font-extrabold text-black">
-        <span className="text-red-500">Glim</span>mer
+        <span className="text-green-500">Ou</span>dra
       </div>
       
       {/* Navigation Links */}
@@ -16,7 +16,7 @@ const Sidebar = () => {
       key={item}
       href="#"
       className={`px-3 py-2 rounded hover:bg-red-100 ${
-        item === "Customers" ? "bg-red-400 text-white" : "text-gray-700"
+        item === "Customers" ? "bg-green-400 text-white" : "text-gray-700"
       }`}
     >
       {item}
