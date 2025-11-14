@@ -3,7 +3,7 @@ import { Bell, Search } from "lucide-react";
 
 const Topbar = () => {
   return (
-    <div className="flex items-center justify-between bg-red-200 px-6 py-4 shadow-sm">
+    <div className="flex items-center justify-between bg-green-200 px-6 py-4 shadow-sm">
       <h2 className="text-2xl font-semibold">Customer Management Page</h2>
       <div className="flex items-center space-x-4">
         <div className="relative">
