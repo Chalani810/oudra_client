@@ -1,3 +1,4 @@
+//path: oudra-client(web app front end)/src/App.js
 import {
   BrowserRouter as Router,
   Routes,
@@ -16,6 +17,7 @@ import AdminRoute from "./component/AdminRoute";
 import UserRoute from "./component/UserRoute";
 
 // Admin components
+
 import AdminEvents from "./pages/AdminEvents";
 import AdminAddEvent from "./pages/AdminAddEvent";
 import AdminProduct from "./pages/AdminProduct";
@@ -92,6 +94,7 @@ function AppWithRoutes() {
 
       <Routes>
         {/* Admin Routes */}
+
         <Route path="/adminevents" element={<AdminRoute><AdminEvents /></AdminRoute>} />
         <Route path="/adminaddevent" element={<AdminRoute><AdminAddEvent /></AdminRoute>} />
         <Route path="/adminproduct" element={<AdminRoute><AdminProduct /></AdminRoute>} />
