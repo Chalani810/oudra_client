@@ -12,8 +12,6 @@ import "./index.css";
 // Global components
 import Header from "./component/Header";
 import Footer from "./component/Footer";
-import AdminRoute from "./component/AdminRoute";
-import UserRoute from "./component/UserRoute";
 
 // Admin components
 import AdminEvents from "./pages/AdminEvents";
@@ -28,6 +26,7 @@ import CustomerMgtPage from "./pages/CustomerMgtPage";
 import CertificateCard from "./pages/CertificateCard";
 import Dashboard from "./pages/Dashboard";
 import SalaryView from "./pages/EmployeePayroll";
+import Certificate from "./pages/Certificate";
 
 // Public pages
 import AboutUs from "./pages/AboutUs";
@@ -48,6 +47,9 @@ import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import ResetPasswordForm from "./pages/ResetPasswordForm";
 import SettingsPage from "./pages/Settings";
 
+// Blockchain Investor Management
+import BlockchainInvestorPage from "./pages/BlockchainInvestorPage";
+
 import { CartProvider } from "./CartContext";
 
 function App() {
@@ -62,19 +64,16 @@ function App() {
 
 function AppWithRoutes() {
   const location = useLocation();
-  const isEventAdminPage =
-    location.pathname === "/adminevents" ||
-    location.pathname === "/adminaddevent";
-  const isCustomerAdminPage = location.pathname === "/customers";
   const userData = JSON.parse(localStorage.getItem("user"));
 
-  // Header/Footer rendering condition
   const hideHeaderFooter =
     location.pathname.startsWith("/admin") ||
     location.pathname === "/dashboard" ||
     location.pathname === "/employee-payroll" ||
     location.pathname === "/settings" ||
-    location.pathname === "/CertificateCard";
+    location.pathname === "/CertificateCard" ||
+    location.pathname === "/blockchain-investors" ||
+    location.pathname.startsWith("/certificate");
 
   return (
     <>
@@ -88,48 +87,54 @@ function AppWithRoutes() {
           loading: { duration: 5000 },
         }}
       />
+
       {!hideHeaderFooter && <Header />}
 
       <Routes>
+        {/* Blockchain Investor Management */}
+        <Route path="/blockchain-investors" element={<BlockchainInvestorPage />} />
+
+        {/* Certificate Routes */}
+        <Route path="/certificate/:investorId" element={<Certificate />} />
+        <Route path="/verify/:blockHash" element={<Certificate />} />
+
         {/* Admin Routes */}
-        <Route path="/adminevents" element={<AdminRoute><AdminEvents /></AdminRoute>} />
-        <Route path="/adminaddevent" element={<AdminRoute><AdminAddEvent /></AdminRoute>} />
-        <Route path="/adminproduct" element={<AdminRoute><AdminProduct /></AdminRoute>} />
-        <Route path="/admin-bills" element={<AdminRoute><AdminBills /></AdminRoute>} />
+        <Route path="/adminevents" element={<AdminEvents />} />
+        <Route path="/adminaddevent" element={<AdminAddEvent />} />
+        <Route path="/adminproduct" element={<AdminProduct />} />
+        <Route path="/admin-bills" element={<AdminBills />} />
         <Route
           path="/CertificateCard"
           element={
-            <AdminRoute>
-              <CertificateCard
-                certificate={{
-                  _id: "CERT123",
-                  treeId: "TR-001",
-                  owner: "John Doe",
-                  species: "Aquilaria Malaccensis",
-                  plantingDate: "2022-05-10",
-                  status: "Approved",
-                  resinQuality: "A",
-                  resinYield: 25,
-                  gpsCoordinates: { latitude: 7.8731, longitude: 80.7718 },
-                }}
-                showActions={true}
-              />
-            </AdminRoute>
+            <CertificateCard
+              certificate={{
+                _id: "CERT123",
+                treeId: "TR-001",
+                owner: "John Doe",
+                species: "Aquilaria Malaccensis",
+                plantingDate: "2022-05-10",
+                status: "Approved",
+                resinQuality: "A",
+                resinYield: 25,
+                gpsCoordinates: { latitude: 7.8731, longitude: 80.7718 },
+              }}
+              showActions={true}
+            />
           }
         />
-        <Route path="/employee-payroll" element={<AdminRoute><SalaryView /></AdminRoute>} />
-        <Route path="/dashboard" element={<AdminRoute><Dashboard /></AdminRoute>} />
-        <Route path="/customers" element={<AdminRoute><CustomerMgtPage /></AdminRoute>} />
-        <Route path="/settings" element={<AdminRoute><SettingsPage /></AdminRoute>} />
+        <Route path="/employee-payroll" element={<SalaryView />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/customers" element={<CustomerMgtPage />} />
+        <Route path="/settings" element={<SettingsPage />} />
 
         {/* User Routes */}
-        <Route path="/customerprofile" element={<UserRoute><ProfilePage /></UserRoute>} />
-        <Route path="/cart" element={<UserRoute><Cart /></UserRoute>} />
-        <Route path="/checkout" element={<UserRoute><Checkout /></UserRoute>} />
-        <Route path="/invoice" element={<UserRoute><Invoice /></UserRoute>} />
-        <Route path="/feedback" element={<UserRoute><FeedbackListPage /></UserRoute>} />
+        <Route path="/customerprofile" element={<ProfilePage />} />
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/invoice" element={<Invoice />} />
+        <Route path="/feedback" element={<FeedbackListPage />} />
 
-        {/* Public / Mixed Routes */}
+        {/* Public / Mixed */}
         <Route path="/feedback" element={<FeedbackPage />} />
         <Route path="/orders/:userId" element={<OrderHistory />} />
         <Route path="/customerviewevent" element={<CustomerViewEvent />} />
