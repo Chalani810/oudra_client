@@ -29,6 +29,13 @@ import CertificateCard from "./pages/CertificateCard";
 import Dashboard from "./pages/Dashboard";
 import SalaryView from "./pages/EmployeePayroll";
 
+import ResinDashboard from "./pages/ResinDashboard";
+import ResinDetail from "./pages/ResinDetail";
+import ResinCompare from "./pages/ResinCompare";
+import HeatmapViewer from "./pages/HeatmapViewer";
+import ResinHistoryDetail from "./pages/ResinHistoryDetail";
+import ResinAnalysisTable from "./pages/ResinAnalysisTable";
+
 // Public pages
 import AboutUs from "./pages/AboutUs";
 import SignUpPage from "./pages/SignUp";
@@ -74,7 +81,13 @@ function AppWithRoutes() {
     location.pathname === "/dashboard" ||
     location.pathname === "/employee-payroll" ||
     location.pathname === "/settings" ||
-    location.pathname === "/CertificateCard";
+    location.pathname === "/CertificateCard" ||
+    location.pathname === "/resin-dashboard" ||
+    location.pathname.startsWith("/resin-details")||
+    location.pathname === "/resin-compare" ||
+    location.pathname === "/heatmap-viewer" ||
+    location.pathname === "/resin-history-detail" ||
+    location.pathname === "/resin-analysis-table";
 
   return (
     <>
@@ -92,6 +105,62 @@ function AppWithRoutes() {
 
       <Routes>
         {/* Admin Routes */}
+
+<Route 
+          path="/resin-dashboard" 
+          element={
+            <AdminRoute>
+              <ResinDashboard />
+            </AdminRoute>
+          } 
+        />
+
+          <Route 
+          path="/resin-details/:treeId" 
+          element={
+            <AdminRoute>
+              <ResinDetail />
+            </AdminRoute>
+             }
+           />
+
+
+        <Route 
+          path="/resin-compare" 
+          element={ 
+            <AdminRoute>
+              <ResinCompare />
+            </AdminRoute>
+          } 
+        />
+
+        <Route 
+          path="/heatmap-viewer" 
+          element={
+            <AdminRoute>
+              <HeatmapViewer />
+            </AdminRoute>
+          } 
+        />
+
+        <Route 
+          path="/resin-history-detail" 
+          element={
+            <AdminRoute>
+              <ResinHistoryDetail />
+            </AdminRoute>
+          } 
+        />
+
+        <Route 
+          path="/resin-analysis-table" 
+          element={
+            <AdminRoute>
+              <ResinAnalysisTable />
+            </AdminRoute>
+          } 
+        />
+
         <Route path="/adminevents" element={<AdminRoute><AdminEvents /></AdminRoute>} />
         <Route path="/adminaddevent" element={<AdminRoute><AdminAddEvent /></AdminRoute>} />
         <Route path="/adminproduct" element={<AdminRoute><AdminProduct /></AdminRoute>} />
@@ -149,3 +218,4 @@ function AppWithRoutes() {
 }
 
 export default App;
+ 
