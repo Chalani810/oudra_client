@@ -121,7 +121,7 @@ const TreeTable = () => {
         <thead className="bg-gray-100 border-b">
           <tr>
             <th className="p-3 text-left font-medium">Tree ID</th>
-            <th className="p-3 text-left font-medium">NFC Tag ID</th>
+            <th className="p-3 text-left font-medium">NFC Tag</th>
             <th className="p-3 text-left font-medium">Planted Date</th>
             <th className="p-3 text-left font-medium">Age</th>
             <th className="p-3 text-left font-medium">Investor ID</th>
@@ -138,7 +138,11 @@ const TreeTable = () => {
           {trees.map((tree) => (
             <tr key={tree._id} className="border-b hover:bg-gray-50">
               <td className="p-3 font-medium">{tree.treeId}</td>
-              <td className="p-3">{tree.nfcTagId || "N/A"}</td>
+              <td className="p-3"> {tree.nfcTagId ? ( <span className="text-green-700 font-medium">{tree.nfcTagId}</span>
+                    ) : (
+              <span className="text-gray-500 text-sm">Not assigned</span>
+                   )}
+              </td>              
               <td className="p-3">{formatDate(tree.plantedDate)}</td>
               <td className="p-3">{calculateAge(tree.plantedDate)}</td>
               <td className="p-3">{tree.investorId || "N/A"}</td>

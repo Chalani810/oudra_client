@@ -19,11 +19,10 @@ import UserRoute from "./component/UserRoute";
 // Admin components
 import TreeMgtPage from "./pages/TreeMgtPage";
 import TreeProfileScreen from "./pages/TreeProfileScreen";
-import VirtualMapPage from "./pages/VirtualMapPage";
+import OudraAdminDashboard from "./pages/OudraAdminDashboard";
 import TreeObservationsPage from "./pages/TreeObservationsPage";
 import TreeHistoryPage from "./pages/TreeHistoryPage"; 
 import TasksPage from "./pages/TasksPage";
-import NFCtagMgtPage from "./pages/NFCtagMgt";
 import AdminEvents from "./pages/AdminEvents";
 import AdminAddEvent from "./pages/AdminAddEvent";
 import AdminProduct from "./pages/AdminProduct";
@@ -102,10 +101,9 @@ function AppWithRoutes() {
         {/* Admin Routes */}
         <Route path="/treemgt" element={<AdminRoute><TreeMgtPage /></AdminRoute>} />
         <Route path="/treeprofile/:treeId" element={<AdminRoute><TreeProfileScreen /></AdminRoute>} />
-        <Route path="/virtualmap" element={<AdminRoute><VirtualMapPage /></AdminRoute>} />
+        <Route path="/admindashboard" element={<AdminRoute><OudraAdminDashboard /></AdminRoute>} />
         <Route path="/treeprofile/:treeId/observations" element={<AdminRoute><TreeObservationsPage /></AdminRoute>} />
         <Route path="/treeprofile/:treeId/history" element={<AdminRoute><TreeHistoryPage /></AdminRoute>} />
-        <Route path="/nfctagmgt" element={<AdminRoute><NFCtagMgtPage /></AdminRoute>} />
         <Route path="/taskmgt" element={<AdminRoute><TasksPage /></AdminRoute>} />
         <Route path="/adminevents" element={<AdminRoute><AdminEvents /></AdminRoute>} />
         <Route path="/adminaddevent" element={<AdminRoute><AdminAddEvent /></AdminRoute>} />

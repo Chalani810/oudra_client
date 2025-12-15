@@ -1,4 +1,4 @@
-//path: oudra-client(web app front end)/src/component/TreeMgt/TreeTable.jsx
+//path: oudra-client(web app front end)/src/component/pages/TreeObservationsPage.jsx
 
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";

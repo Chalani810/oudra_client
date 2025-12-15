@@ -1,8 +1,9 @@
+//path:oudra-client/src/pages/OudraAdminDashboard.jsx
 import React from "react";
 //import Sidebar from "../component/SideBar";
 import { Filter, Camera, FileText, Download, Plus, Minus, Layers } from "lucide-react";
 
-const VirtualMapPage = () => {
+const OudraAdminDashboard = () => {
   return (
     <div className="flex min-h-screen bg-gray-100">
 
@@ -13,7 +14,7 @@ const VirtualMapPage = () => {
 
         {/* Top Bar */}
         <div className="flex items-center justify-between bg-white px-6 py-4 shadow-sm border-b">
-          <h2 className="text-2xl font-semibold text-gray-800">Virtual Map View</h2>
+          <h2 className="text-2xl font-semibold text-gray-800">Admin Dashboard</h2>
 
           <div className="flex items-center gap-3">
             <button className="flex items-center bg-white border border-gray-300 px-4 py-2 rounded-lg hover:bg-gray-100">
@@ -100,4 +101,4 @@ const VirtualMapPage = () => {
   );
 };
 
-export default VirtualMapPage;
+export default OudraAdminDashboard;
