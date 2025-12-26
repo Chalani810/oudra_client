@@ -23,6 +23,7 @@ import OudraAdminDashboard from "./pages/OudraAdminDashboard";
 import TreeObservationsPage from "./pages/TreeObservationsPage";
 import TreeHistoryPage from "./pages/TreeHistoryPage"; 
 import TasksPage from "./pages/TasksPage";
+import EmployeeMgtPage from "./pages/EmployeeMgtPage";
 import AdminEvents from "./pages/AdminEvents";
 import AdminAddEvent from "./pages/AdminAddEvent";
 import AdminProduct from "./pages/AdminProduct";
@@ -105,6 +106,7 @@ function AppWithRoutes() {
         <Route path="/treeprofile/:treeId/observations" element={<AdminRoute><TreeObservationsPage /></AdminRoute>} />
         <Route path="/treeprofile/:treeId/history" element={<AdminRoute><TreeHistoryPage /></AdminRoute>} />
         <Route path="/taskmgt" element={<AdminRoute><TasksPage /></AdminRoute>} />
+        <Route path="/employee-mgt" element={<AdminRoute><EmployeeMgtPage /></AdminRoute>} />
         <Route path="/adminevents" element={<AdminRoute><AdminEvents /></AdminRoute>} />
         <Route path="/adminaddevent" element={<AdminRoute><AdminAddEvent /></AdminRoute>} />
         <Route path="/adminproduct" element={<AdminRoute><AdminProduct /></AdminRoute>} />
