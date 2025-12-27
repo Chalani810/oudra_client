@@ -6,6 +6,7 @@ const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
 export const employeeService = {
   getAllEmployees: async () => {
     try {
+      // this is pointing to /employee not /api/employee
       const response = await axios.get(`${API_URL}/employee`);
       return response.data;
     } catch (error) {
