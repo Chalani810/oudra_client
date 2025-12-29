@@ -9,10 +9,10 @@ const mapContainerStyle = {
   height: '100%'
 };
 
-// Default center (Sri Lanka - Need to adjust to Pintanna plantation)
+// Default center (SLIIT - Need to adjust to Pintanna plantation)
 const defaultCenter = {
-  lat: 7.8731,
-  lng: 80.7718
+  lat: 6.914686,
+  lng: 79.972947
 };
 
 const mapOptions = {
@@ -140,7 +140,7 @@ const TreeMap = () => {
             onClick={() => handleMarkerClick(tree)}
             icon={{
               url: getMarkerIcon(tree.healthStatus),
-              scaledSize: new window.google.maps.Size(32, 32)
+              scaledSize: window.google?.maps ? new window.google.maps.Size(32, 32) : undefined
             }}
             title={tree.treeId}
           />
