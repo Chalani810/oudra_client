@@ -82,7 +82,7 @@ const Header = () => {
               isActive(`/orders/${user._id}`) ? "text-green-600" : ""
             }`}
           >
-            Order History
+            Investment
           </Link>
         )}
         <Link
