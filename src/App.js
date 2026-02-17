@@ -16,7 +16,7 @@ import Footer from "./component/Footer";
 import AdminRoute from "./component/AdminRoute";
 import UserRoute from "./component/UserRoute";
 
-// Admin components
+import WeatherPage from "./pages/WeatherPage";
 import TreeMgtPage from "./pages/TreeMgtPage";
 import TreeProfileScreen from "./pages/TreeProfileScreen";
 import OudraAdminDashboard from "./pages/OudraAdminDashboard";
@@ -29,8 +29,11 @@ import AdminAddEvent from "./pages/AdminAddEvent";
 import AdminProduct from "./pages/AdminProduct";
 import AdminBills from "./pages/AdminBills";
 
+
 // Customer Management Components
 import CustomerMgtPage from "./pages/CustomerMgtPage";
+//admin sensor table
+import IoTSensorData from "./pages/IoTSensorData";
 
 // Employee Management
 import CertificateCard from "./pages/CertificateCard";
@@ -56,6 +59,7 @@ import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import ResetPasswordForm from "./pages/ResetPasswordForm";
 import SettingsPage from "./pages/Settings";
 
+
 import { CartProvider } from "./CartContext";
 
 function App() {
@@ -70,10 +74,6 @@ function App() {
 
 function AppWithRoutes() {
   const location = useLocation();
-  const isEventAdminPage =
-    location.pathname === "/adminevents" ||
-    location.pathname === "/adminaddevent";
-  const isCustomerAdminPage = location.pathname === "/customers";
   const userData = JSON.parse(localStorage.getItem("user"));
 
   // Header/Footer rendering condition
@@ -82,6 +82,7 @@ function AppWithRoutes() {
     location.pathname === "/dashboard" ||
     location.pathname === "/employee-payroll" ||
     location.pathname === "/settings" ||
+    location.pathname === "/IoTSensorData" ||
     location.pathname === "/treemgt" ||
     location.pathname === "/admindashboard" ||
     location.pathname === "/taskmgt" ||
@@ -104,6 +105,7 @@ function AppWithRoutes() {
 
       <Routes>
         {/* Admin Routes */}
+
         <Route path="/treemgt" element={<AdminRoute><TreeMgtPage /></AdminRoute>} />
         <Route path="/treeprofile/:treeId" element={<AdminRoute><TreeProfileScreen /></AdminRoute>} />
         <Route path="/admindashboard" element={<AdminRoute><OudraAdminDashboard /></AdminRoute>} />
@@ -140,6 +142,7 @@ function AppWithRoutes() {
         <Route path="/dashboard" element={<AdminRoute><Dashboard /></AdminRoute>} />
         <Route path="/customers" element={<AdminRoute><CustomerMgtPage /></AdminRoute>} />
         <Route path="/settings" element={<AdminRoute><SettingsPage /></AdminRoute>} />
+        
 
         {/* User Routes */}
         <Route path="/customerprofile" element={<UserRoute><ProfilePage /></UserRoute>} />
@@ -147,14 +150,30 @@ function AppWithRoutes() {
         <Route path="/checkout" element={<UserRoute><Checkout /></UserRoute>} />
         <Route path="/invoice" element={<UserRoute><Invoice /></UserRoute>} />
         <Route path="/feedback" element={<UserRoute><FeedbackListPage /></UserRoute>} />
+        <Route path="/IoTSensorData" element={<AdminRoute><IoTSensorData /></AdminRoute>} />
+
+        {/* Weather Route - Using the new WeatherPage */}
+        <Route path="/weather" element={<WeatherPage />} />
 
         {/* Public / Mixed Routes */}
         <Route path="/feedback" element={<FeedbackPage />} />
         <Route path="/orders/:userId" element={<OrderHistory />} />
         <Route path="/customerviewevent" element={<CustomerViewEvent />} />
         <Route path="/customerproduct/:eventId/:eventName?" element={<CustomerProduct />} />
-        <Route path="/signup" element={!userData ? <SignUpPage /> : userData.role === "user" ? <Navigate to="/" /> : <Navigate to="/dashboard" />} />
-        <Route path="/signin" element={!userData ? <LoginPage /> : userData.role === "user" ? <Navigate to="/" /> : <Navigate to="/dashboard" />} />
+        <Route 
+          path="/signup" 
+          element={
+            !userData ? <SignUpPage /> : 
+            userData.role === "user" ? <Navigate to="/" /> : <Navigate to="/dashboard" />
+          } 
+        />
+        <Route 
+          path="/signin" 
+          element={
+            !userData ? <LoginPage /> : 
+            userData.role === "user" ? <Navigate to="/" /> : <Navigate to="/dashboard" />
+          } 
+        />
         <Route path="/forgot-password/*" element={<ForgotPasswordPage />} />
         <Route path="/reset-password/:token" element={<ResetPasswordForm />} />
         <Route path="/" element={<HomePage />} />
@@ -166,4 +185,5 @@ function AppWithRoutes() {
     </>
   );
 }
+
 export default App;

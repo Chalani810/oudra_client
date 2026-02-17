@@ -1,4 +1,4 @@
-//path: oudra-client(web app front end)/src/component/SidePanel.jsx
+
 import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
