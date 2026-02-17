@@ -1,3 +1,4 @@
+//path: oudra-client(web app front end)/src/App.js
 import {
   BrowserRouter as Router,
   Routes,
@@ -15,8 +16,19 @@ import Footer from "./component/Footer";
 import AdminRoute from "./component/AdminRoute";
 import UserRoute from "./component/UserRoute";
 
-// Weather Page
 import WeatherPage from "./pages/WeatherPage";
+import TreeMgtPage from "./pages/TreeMgtPage";
+import TreeProfileScreen from "./pages/TreeProfileScreen";
+import OudraAdminDashboard from "./pages/OudraAdminDashboard";
+import TreeObservationsPage from "./pages/TreeObservationsPage";
+import TreeHistoryPage from "./pages/TreeHistoryPage"; 
+import TasksPage from "./pages/TasksPage";
+import EmployeeMgtPage from "./pages/EmployeeMgtPage";
+import AdminEvents from "./pages/AdminEvents";
+import AdminAddEvent from "./pages/AdminAddEvent";
+import AdminProduct from "./pages/AdminProduct";
+import AdminBills from "./pages/AdminBills";
+
 
 // Customer Management Components
 import CustomerMgtPage from "./pages/CustomerMgtPage";
@@ -70,8 +82,12 @@ function AppWithRoutes() {
     location.pathname === "/dashboard" ||
     location.pathname === "/employee-payroll" ||
     location.pathname === "/settings" ||
-    location.pathname === "/CertificateCard" ||
-    location.pathname === "/IoTSensorData";
+    location.pathname === "/IoTSensorData" ||
+    location.pathname === "/treemgt" ||
+    location.pathname === "/admindashboard" ||
+    location.pathname === "/taskmgt" ||
+    location.pathname === "/employee-mgt" ||
+    location.pathname === "/CertificateCard";
 
   return (
     <>
@@ -89,6 +105,18 @@ function AppWithRoutes() {
 
       <Routes>
         {/* Admin Routes */}
+
+        <Route path="/treemgt" element={<AdminRoute><TreeMgtPage /></AdminRoute>} />
+        <Route path="/treeprofile/:treeId" element={<AdminRoute><TreeProfileScreen /></AdminRoute>} />
+        <Route path="/admindashboard" element={<AdminRoute><OudraAdminDashboard /></AdminRoute>} />
+        <Route path="/treeprofile/:treeId/observations" element={<AdminRoute><TreeObservationsPage /></AdminRoute>} />
+        <Route path="/treeprofile/:treeId/history" element={<AdminRoute><TreeHistoryPage /></AdminRoute>} />
+        <Route path="/taskmgt" element={<AdminRoute><TasksPage /></AdminRoute>} />
+        <Route path="/employee-mgt" element={<AdminRoute><EmployeeMgtPage /></AdminRoute>} />
+        <Route path="/adminevents" element={<AdminRoute><AdminEvents /></AdminRoute>} />
+        <Route path="/adminaddevent" element={<AdminRoute><AdminAddEvent /></AdminRoute>} />
+        <Route path="/adminproduct" element={<AdminRoute><AdminProduct /></AdminRoute>} />
+        <Route path="/admin-bills" element={<AdminRoute><AdminBills /></AdminRoute>} />
         <Route
           path="/CertificateCard"
           element={
