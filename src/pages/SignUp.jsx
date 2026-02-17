@@ -1,3 +1,4 @@
+//oudra_client/src/pages/SignUp.jsx
 import React from "react";
 import SignUpForm from "../component/SignUp/SignUpForm";
 import BackgroundImage from "../component/SignUp/image9.jpg"; // Import the background image

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { Filter, Camera, FileText, Download, Plus, Minus, Layers } from "lucide-react";
 import TreeMap from "../component/TreeMap/TreeMap";
 import { treeService } from "../services/treeService";
+import SidePanel from "../component/SidePanel"; 
 
 const OudraAdminDashboard = () => {
   const [stats, setStats] = useState({
@@ -79,6 +80,8 @@ const OudraAdminDashboard = () => {
 
   return (
     <div className="flex min-h-screen bg-gray-100">
+      {/* Side Panel */}
+      <SidePanel />
       {/* Main Content */}
       <div className="flex-1 ml-0 md:ml-64 overflow-auto">
         

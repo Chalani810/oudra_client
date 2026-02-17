@@ -82,6 +82,10 @@ function AppWithRoutes() {
     location.pathname === "/dashboard" ||
     location.pathname === "/employee-payroll" ||
     location.pathname === "/settings" ||
+    location.pathname === "/treemgt" ||
+    location.pathname === "/admindashboard" ||
+    location.pathname === "/taskmgt" ||
+    location.pathname === "/employee-mgt" ||
     location.pathname === "/CertificateCard";
 
   return (

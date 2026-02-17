@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import EmployeeMgtTopBar from "../component/EmployeeMgt/EmployeeMgtTopBar";
 import EmployeeTable from "../component/EmployeeMgt/EmployeeTable";
 import { employeeService } from "../services/employeeService";
+import SidePanel from "../component/SidePanel";
 
 const EmployeeMgtPage = () => {
   const [employees, setEmployees] = useState([]);
@@ -41,6 +42,9 @@ const EmployeeMgtPage = () => {
 
   return (
     <div className="flex min-h-screen bg-gray-100">
+      {/* Side Panel */}
+      <SidePanel />
+
       {/* Main Content */}
       <div className="flex-1 ml-0 md:ml-64 overflow-auto">
         
