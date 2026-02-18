@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import TopButtons from "../component/Weather/TopButtons";
-import Inputs from "../component/Weather/Inputs";
-import TimeAndLocation from "../component/Weather/TimeAndLocation";
-import TempAndDetails from "../component/Weather/TempAndDetails";
-import Forcast from "../component/Weather/Forcast";
+import TopButtons from "../component/weather/TopButtons";
+import Inputs from "../component/weather/Inputs";
+import TimeAndLocation from "../component/weather/TimeAndLocation";
+import TempAndDetails from "../component/weather/TempAndDetails";
+import Forcast from "../component/weather/Forcast";
 import getFormattedWeatherData from "../services/WeatherService";
 
 const WeatherPage = () => {
