@@ -223,7 +223,7 @@ function AppWithRoutes() {
         <Route path="/weather" element={<WeatherPage />} />
 
         {/* Public / Mixed Routes */}
-        <Route path="/feedback" element={<FeedbackPage />} />
+        {/* <Route path="/feedback" element={<FeedbackPage />} /> */}
         <Route path="/orders/:userId" element={<OrderHistory />} />
         <Route path="/customerviewevent" element={<CustomerViewEvent />} />
         <Route path="/customerproduct/:eventId/:eventName?" element={<CustomerProduct />} />
