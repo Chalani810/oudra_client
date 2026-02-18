@@ -106,12 +106,12 @@ const Header = () => {
         <div className="flex items-center space-x-4">
 
         {/* Cart Icon */}
-        <div className="relative">
+        {/* <div className="relative">
           <Link to="/cart">
             <FiShoppingCart className="text-2xl" />
             <span className="absolute top-0 right-0 h-2 w-2 bg-green-600 rounded-full"></span>
           </Link>
-        </div>
+        </div> */}
 
         {/* Conditional rendering based on login status */}
         {!isLoggedIn ? (

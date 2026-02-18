@@ -40,6 +40,13 @@ import CertificateCard from "./pages/CertificateCard";
 import Dashboard from "./pages/Dashboard";
 import SalaryView from "./pages/EmployeePayroll";
 
+import ResinDashboard from "./pages/ResinDashboard";
+import ResinDetail from "./pages/ResinDetail";
+import ResinCompare from "./pages/ResinCompare";
+import HeatmapViewer from "./pages/HeatmapViewer";
+import ResinHistoryDetail from "./pages/ResinHistoryDetail";
+import ResinAnalysisTable from "./pages/ResinAnalysisTable";
+
 // Public pages
 import AboutUs from "./pages/AboutUs";
 import SignUpPage from "./pages/SignUp";
@@ -47,7 +54,6 @@ import LoginPage from "./pages/SignInPage";
 import HomePage from "./pages/HomePage";
 import ContactUs from "./pages/ContactUs";
 import Checkout from "./pages/Checkout";
-import FeedbackPage from "./pages/FeedbackListPage";
 import FeedbackListPage from "./pages/FeedbackListPage";
 import ProfilePage from "./pages/CustomerProfilePage";
 import Cart from "./pages/UserCart";
@@ -82,6 +88,12 @@ function AppWithRoutes() {
     location.pathname === "/dashboard" ||
     location.pathname === "/employee-payroll" ||
     location.pathname === "/settings" ||
+    location.pathname === "/resin-dashboard" ||
+    location.pathname.startsWith("/resin-details")||
+    location.pathname === "/resin-compare" ||
+    location.pathname === "/heatmap-viewer" ||
+    location.pathname === "/resin-history-detail" ||
+    location.pathname === "/resin-analysis-table" ||
     location.pathname === "/IoTSensorData" ||
     location.pathname === "/treemgt" ||
     location.pathname === "/admindashboard" ||
@@ -105,6 +117,61 @@ function AppWithRoutes() {
 
       <Routes>
         {/* Admin Routes */}
+
+       <Route 
+          path="/resin-dashboard" 
+          element={
+            <AdminRoute>
+              <ResinDashboard />
+            </AdminRoute>
+          } 
+        />
+
+          <Route 
+          path="/resin-details/:treeId" 
+          element={
+            <AdminRoute>
+              <ResinDetail />
+            </AdminRoute>
+             }
+           />
+
+
+        <Route 
+          path="/resin-compare" 
+          element={ 
+            <AdminRoute>
+              <ResinCompare />
+            </AdminRoute>
+          } 
+        />
+
+        <Route 
+          path="/heatmap-viewer" 
+          element={
+            <AdminRoute>
+              <HeatmapViewer />
+            </AdminRoute>
+          } 
+        />
+
+        <Route 
+          path="/resin-history-detail" 
+          element={
+            <AdminRoute>
+              <ResinHistoryDetail />
+            </AdminRoute>
+          } 
+        />
+
+        <Route 
+          path="/resin-analysis-table" 
+          element={
+            <AdminRoute>
+              <ResinAnalysisTable />
+            </AdminRoute>
+          } 
+        />
 
         <Route path="/treemgt" element={<AdminRoute><TreeMgtPage /></AdminRoute>} />
         <Route path="/treeprofile/:treeId" element={<AdminRoute><TreeProfileScreen /></AdminRoute>} />
