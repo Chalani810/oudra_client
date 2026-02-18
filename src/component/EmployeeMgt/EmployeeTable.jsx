@@ -1,6 +1,6 @@
 // oudra-client/src/components/EmployeeMgt/EmployeeTable.jsx
 import React, { useState } from "react";
-import { Eye, Edit, Trash2, Phone, Mail, RefreshCw } from "lucide-react";
+import { Eye, Edit, Trash2, Phone, Mail, User, RefreshCw } from "lucide-react";
 import { employeeService } from "../../services/employeeService";
 import EditEmployeeModal from "./EditEmployeeModal";
 import ViewEmployeeModal from "./ViewEmployeeModal";
