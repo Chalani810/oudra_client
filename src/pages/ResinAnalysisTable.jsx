@@ -116,10 +116,9 @@ const ResinAnalysisTable = () => {
                         {new Date(row.timestamp).toLocaleString()}
                       </td>
 
-                      {/* FIXED: Access block property from the tree object */}
                       <td className="px-4 py-3">
-  {row.treeId?.block || "N/A"}  {/* Now this will work */}
-</td>
+                     {row.treeId?.block || "N/A"}  
+                     </td>
                       
                       <td className="px-4 py-3">{row.workerName || "—"}</td>
 

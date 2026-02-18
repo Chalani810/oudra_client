@@ -29,8 +29,7 @@ const EventsPage = () => {
   return (
     <div className="bg-white">
       <header className="text-center py-10">
-        <h1 className="text-4xl font-bold">Plan Your Special Event</h1>
-        <p className="mt-4 text-red-400">Choose from our beautifully curated event plans!</p>
+        <h1 className="text-4xl font-bold">Coming Soon</h1>
       </header>
 
       <div className="grid grid-cols-1 md:grid-cols-1 gap-10 p-10">

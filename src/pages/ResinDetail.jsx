@@ -361,7 +361,7 @@ const updateStatus = async () => {
           <div className="mb-6 flex justify-between items-center">
             <div>
               <h1 className="text-2xl font-bold text-gray-800">
-                Tree #: {analysis.treeId?.treeId} – AI Resin Analysis
+                Tree ID: {analysis.treeId?.treeId} – AI Resin Analysis
               </h1>
               <p className="text-gray-500">
                 Last Analysis: {new Date(analysis.timestamp).toLocaleString()}
