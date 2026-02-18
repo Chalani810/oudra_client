@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
@@ -8,21 +9,19 @@ const SidePanel = () => {
   const [isTreeManagementOpen, setIsTreeManagementOpen] = useState(false);
 
   const menuItems = [
-    { name: "Dashboard", path: "" },
+    { name: "Dashboard", path: "/admindashboard" },
     { 
       name: "Tree Management", 
-      path: "/adminEvents",
+      path: "/treemgt",
       children: [
-        { name: "NFC Tag Management", path: "/nfc-management" },
         { name: "IoT Sensor Data", path: "/iot-sensor-data" },
         { name: "Resin Analysis & AI Insights", path: "/resin-dashboard" },
         { name: "Blockchain Certificates", path: "/blockchain-certificates" }
       ]
     },
-    { name: "Virtual Map", path: "" },
-    { name: "Tasks & Workforce", path: "" },
+    { name: "Tasks & Workforce", path: "/taskmgt" },
     { name: "Investments", path: "" },
-    { name: "Employees", path: "" },
+    { name: "Employees", path: "/employee-mgt" },
     { name: "Customers", path: "" },
     { name: "Settings", path: "" },
   ];
@@ -62,31 +61,34 @@ const SidePanel = () => {
                 <>
                   {/* Tree Management with Dropdown */}
                   <button
-                    onClick={toggleTreeManagement}
-                    className={`px-3 py-2 rounded hover:bg-green-100 transition text-left flex items-center justify-between ${
-                      isActive
-                        ? "bg-green-500 text-white font-semibold"
-                        : "text-gray-700"
-                    }`}
+                    onClick={() => {
+                    navigate(item.path); // Navigate to /treemgt
+                    toggleTreeManagement(); // Toggle dropdown
+                  }}
+                  className={`px-3 py-2 rounded hover:bg-green-100 transition text-left flex items-center justify-between ${
+                  isActive
+                  ? "bg-green-500 text-white font-semibold"
+                  : "text-gray-700"
+              }`}
                   >
                     <span>{item.name}</span>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className={`h-4 w-4 transition-transform ${
-                        isTreeManagementOpen ? "rotate-180" : ""
-                      }`}
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 9l-7 7-7-7"
-                      />
-                    </svg>
-                  </button>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className={`h-4 w-4 transition-transform ${
+      isTreeManagementOpen ? "rotate-180" : ""
+    }`}
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M19 9l-7 7-7-7"
+    />
+  </svg>
+</button>
                   
                   {/* Dropdown Content */}
                   {isTreeManagementOpen && (
