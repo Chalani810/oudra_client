@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@react-google-maps/api": "^2.20.8",
     "@tailwindcss/cli": "^4.1.4",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
@@ -13,6 +14,7 @@
     "html2canvas": "^1.4.1",
     "jspdf": "^3.0.1",
     "lucide-react": "^0.503.0",
+    "luxon": "^3.7.2",
     "react": "^19.0.0",
     "react-datepicker": "^8.8.0",
     "react-dom": "^19.0.0",
