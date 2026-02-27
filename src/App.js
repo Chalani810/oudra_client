@@ -229,16 +229,15 @@ function AppWithRoutes() {
         <Route path="/customerproduct/:eventId/:eventName?" element={<CustomerProduct />} />
         <Route 
           path="/signup" 
-          element={
-            !userData ? <SignUpPage /> : 
-            userData.role === "user" ? <Navigate to="/" /> : <Navigate to="/dashboard" />
-          } 
+          element={<Navigate to="/signin" replace />} 
         />
         <Route 
           path="/signin" 
           element={
-            !userData ? <LoginPage /> : 
-            userData.role === "user" ? <Navigate to="/" /> : <Navigate to="/dashboard" />
+          !userData ? <LoginPage /> :
+          userData.role === "manager" ? <Navigate to="/admindashboard" replace /> :
+          userData.role === "investor" ? <Navigate to="/investor-dashboard" replace /> :
+          <LoginPage />
           } 
         />
         <Route path="/forgot-password/*" element={<ForgotPasswordPage />} />
