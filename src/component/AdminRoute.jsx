@@ -10,7 +10,8 @@ const AdminRoute = ({ children }) => {
     return <Navigate to="/signin" replace />;
   }
 
-  if (userData.role !== 'admin') {
+  // CHANGED: "admin" → "manager"
+  if (userData.role !== 'manager') {
     return <UnauthorizedPage />;
   }
 

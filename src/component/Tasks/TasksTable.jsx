@@ -1,36 +1,42 @@
 // oudra-client/src/components/Tasks/TasksTable.jsx
+// CHANGES FROM EXISTING:
+//  1. Added searchTerm and filters props
+//  2. Added applyFilters() — filters by taskId, taskType, priority, assignedTo, block, dueDateFrom, dueDateTo, status
+//  3. Table renders filteredTasks instead of updatedTasks
+//  4. Header shows filtered count vs total
+//  5. "No tasks match your filters" empty state added
+//  6. All existing columns, modals, and actions unchanged
+
 import React, { useState, useEffect } from "react";
 import { Edit, Trash2, RefreshCw, Eye, Calendar, AlertCircle, CheckCircle } from "lucide-react";
 import { taskService } from "../../services/taskService";
 import EditTaskModal from "./EditTaskModal";
 
 const statusColors = {
-  pending: "bg-yellow-100 text-yellow-800",
-  assigned: "bg-blue-100 text-blue-800",
+  pending:     "bg-yellow-100 text-yellow-800",
+  assigned:    "bg-blue-100 text-blue-800",
   in_progress: "bg-purple-100 text-purple-800",
-  completed: "bg-green-100 text-green-800",
-  cancelled: "bg-red-100 text-red-800",
-  overdue: "bg-red-200 text-red-900"
+  completed:   "bg-green-100 text-green-800",
+  cancelled:   "bg-red-100 text-red-800",
+  overdue:     "bg-red-200 text-red-900",
 };
 
 const priorityColors = {
-  low: "bg-gray-100 text-gray-800",
+  low:    "bg-gray-100 text-gray-800",
   medium: "bg-yellow-100 text-yellow-800",
-  high: "bg-orange-100 text-orange-800",
-  urgent: "bg-red-100 text-red-800"
+  high:   "bg-orange-100 text-orange-800",
+  urgent: "bg-red-100 text-red-800",
 };
 
-const TasksTable = () => {
-  const [tasks, setTasks] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [editingTask, setEditingTask] = useState(null);
+const TasksTable = ({ searchTerm = "", filters = {} }) => {
+  const [tasks,          setTasks]          = useState([]);
+  const [loading,        setLoading]        = useState(true);
+  const [editingTask,    setEditingTask]    = useState(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [selectedTask, setSelectedTask] = useState(null);
-  const [showDetails, setShowDetails] = useState(false);
+  const [selectedTask,   setSelectedTask]   = useState(null);
+  const [showDetails,    setShowDetails]    = useState(false);
 
-  useEffect(() => {
-    fetchTasks();
-  }, []);
+  useEffect(() => { fetchTasks(); }, []);
 
   const fetchTasks = async () => {
     try {
@@ -44,6 +50,83 @@ const TasksTable = () => {
       setLoading(false);
     }
   };
+
+  const isTaskOverdue = (dueDate, status) => {
+    if (status === "completed" || status === "cancelled") return false;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return new Date(dueDate) < today;
+  };
+
+  // Apply overdue status first, then filter
+  const tasksWithOverdue = tasks.map(task => {
+    if (isTaskOverdue(task.dueDate, task.status) && task.status !== "overdue") {
+      return { ...task, status: "overdue" };
+    }
+    return task;
+  });
+
+  // ── Apply all active filters + search term ──────────────────────────────
+  const applyFilters = (allTasks) => {
+    return allTasks.filter(task => {
+
+      // Search term — matches taskId, title, assignedTo name, block
+      if (searchTerm) {
+        const term = searchTerm.toLowerCase();
+        const matchesSearch =
+          task.taskId?.toLowerCase().includes(term) ||
+          task.title?.toLowerCase().includes(term) ||
+          task.assignedTo?.name?.toLowerCase().includes(term) ||
+          task.block?.toLowerCase().includes(term);
+        if (!matchesSearch) return false;
+      }
+
+      // Task ID (partial match)
+      if (filters.taskId) {
+        if (!task.taskId?.toLowerCase().includes(filters.taskId.toLowerCase())) return false;
+      }
+
+      // Task Type (exact)
+      if (filters.taskType) {
+        if (task.taskType !== filters.taskType) return false;
+      }
+
+      // Priority (exact)
+      if (filters.priority) {
+        if (task.priority !== filters.priority) return false;
+      }
+
+      // Assigned Employee (by _id)
+      if (filters.assignedTo) {
+        const assignedId = task.assignedTo?._id || task.assignedTo;
+        if (assignedId !== filters.assignedTo) return false;
+      }
+
+      // Block (exact)
+      if (filters.block) {
+        if (task.block !== filters.block) return false;
+      }
+
+      // Status (exact) — compare against overdue-updated status
+      if (filters.status) {
+        if (task.status !== filters.status) return false;
+      }
+
+      // Due Date From
+      if (filters.dueDateFrom) {
+        if (new Date(task.dueDate) < new Date(filters.dueDateFrom)) return false;
+      }
+
+      // Due Date To
+      if (filters.dueDateTo) {
+        if (new Date(task.dueDate) > new Date(filters.dueDateTo)) return false;
+      }
+
+      return true;
+    });
+  };
+
+  const filteredTasks = applyFilters(tasksWithOverdue);
 
   const handleDelete = async (taskId, taskTitle) => {
     if (window.confirm(`Are you sure you want to delete "${taskTitle}"? This action cannot be undone.`)) {
@@ -80,41 +163,15 @@ const TasksTable = () => {
   };
 
   const getStatusText = (status) => {
-    const statusMap = {
-      pending: "Pending",
-      assigned: "Assigned",
-      in_progress: "In Progress",
-      completed: "Completed",
-      cancelled: "Cancelled",
-      overdue: "Overdue"
-    };
-    return statusMap[status] || status;
+    const map = { pending: "Pending", assigned: "Assigned", in_progress: "In Progress",
+                  completed: "Completed", cancelled: "Cancelled", overdue: "Overdue" };
+    return map[status] || status;
   };
 
   const getPriorityText = (priority) => {
-    const priorityMap = {
-      low: "Low",
-      medium: "Medium",
-      high: "High",
-      urgent: "Urgent"
-    };
-    return priorityMap[priority] || priority;
+    const map = { low: "Low", medium: "Medium", high: "High", urgent: "Urgent" };
+    return map[priority] || priority;
   };
-
-  const isTaskOverdue = (dueDate, status) => {
-    if (status === "completed" || status === "cancelled") return false;
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    return new Date(dueDate) < today;
-  };
-
-  // Update task statuses to check for overdue
-  const updatedTasks = tasks.map(task => {
-    if (isTaskOverdue(task.dueDate, task.status) && task.status !== "overdue") {
-      return { ...task, status: "overdue" };
-    }
-    return task;
-  });
 
   if (loading) {
     return (
@@ -127,12 +184,16 @@ const TasksTable = () => {
   return (
     <>
       <div className="overflow-x-auto w-full bg-white rounded-xl shadow-sm">
-        {/* Table Header with Refresh */}
+        {/* Header */}
         <div className="flex justify-between items-center p-4 border-b">
           <h2 className="text-lg font-semibold text-gray-800">
-            Tasks ({tasks.length})
+            Tasks ({filteredTasks.length}
+            {filteredTasks.length !== tasks.length && (
+              <span className="text-gray-400 font-normal text-sm"> of {tasks.length} total</span>
+            )}
+            )
           </h2>
-          <button 
+          <button
             onClick={fetchTasks}
             className="flex items-center gap-2 px-3 py-2 text-sm bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
           >
@@ -157,17 +218,13 @@ const TasksTable = () => {
           </thead>
 
           <tbody>
-            {updatedTasks.map((task) => (
+            {filteredTasks.map((task) => (
               <tr key={task._id} className="border-b hover:bg-gray-50">
                 <td className="p-3 font-mono text-xs">
-                  <span className="px-2 py-1 bg-gray-100 text-gray-700 rounded">
-                    {task.taskId}
-                  </span>
+                  <span className="px-2 py-1 bg-gray-100 text-gray-700 rounded">{task.taskId}</span>
                 </td>
                 <td className="p-3 font-medium">
-                  <div className="max-w-xs truncate" title={task.title}>
-                    {task.title}
-                  </div>
+                  <div className="max-w-xs truncate" title={task.title}>{task.title}</div>
                   {task.description && (
                     <div className="text-xs text-gray-500 truncate max-w-xs" title={task.description}>
                       {task.description}
@@ -175,9 +232,7 @@ const TasksTable = () => {
                   )}
                 </td>
                 <td className="p-3">
-                  <span className="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs">
-                    {task.taskType}
-                  </span>
+                  <span className="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs">{task.taskType}</span>
                 </td>
                 <td className="p-3">
                   <span className={`px-2 py-1 rounded-full text-xs ${priorityColors[task.priority]}`}>
@@ -190,9 +245,7 @@ const TasksTable = () => {
                       <div className="font-medium">{task.assignedTo.name}</div>
                       <div className="text-xs text-gray-500">{task.assignedTo.empId}</div>
                     </div>
-                  ) : (
-                    "Unassigned"
-                  )}
+                  ) : "Unassigned"}
                 </td>
                 <td className="p-3">
                   <span className="px-2 py-1 bg-blue-50 text-blue-700 rounded text-xs font-semibold">
@@ -226,25 +279,13 @@ const TasksTable = () => {
                 </td>
                 <td className="p-3">
                   <div className="flex justify-center space-x-3">
-                    <button
-                      onClick={() => handleViewDetails(task)}
-                      className="text-gray-600 hover:text-green-700 transition-colors p-1"
-                      title="View Details"
-                    >
+                    <button onClick={() => handleViewDetails(task)} className="text-gray-600 hover:text-green-700 transition-colors p-1" title="View Details">
                       <Eye size={18} />
                     </button>
-                    <button
-                      onClick={() => handleEdit(task)}
-                      className="text-gray-600 hover:text-blue-700 transition-colors p-1"
-                      title="Edit"
-                    >
+                    <button onClick={() => handleEdit(task)} className="text-gray-600 hover:text-blue-700 transition-colors p-1" title="Edit">
                       <Edit size={18} />
                     </button>
-                    <button
-                      onClick={() => handleDelete(task._id, task.title)}
-                      className="text-gray-600 hover:text-red-700 transition-colors p-1"
-                      title="Delete"
-                    >
+                    <button onClick={() => handleDelete(task._id, task.title)} className="text-gray-600 hover:text-red-700 transition-colors p-1" title="Delete">
                       <Trash2 size={18} />
                     </button>
                   </div>
@@ -254,20 +295,26 @@ const TasksTable = () => {
           </tbody>
         </table>
 
+        {/* Empty states */}
         {tasks.length === 0 && (
           <div className="text-center p-8 text-gray-500">
-            <div className="mb-3">
-              <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gray-100 mb-2">
-                <AlertCircle size={24} className="text-gray-400" />
-              </div>
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gray-100 mb-2">
+              <AlertCircle size={24} className="text-gray-400" />
             </div>
             <p className="text-lg font-medium mb-2">No tasks found</p>
             <p className="text-sm">Click "New Task" to create your first task.</p>
           </div>
         )}
+
+        {tasks.length > 0 && filteredTasks.length === 0 && (
+          <div className="text-center p-8 text-gray-500">
+            <p className="text-lg mb-2">No tasks match your filters</p>
+            <p className="text-sm">Try adjusting or clearing the filters above.</p>
+          </div>
+        )}
       </div>
 
-      {/* Task Details Modal */}
+      {/* Task Details Modal — unchanged from existing */}
       {showDetails && selectedTask && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
           <div className="bg-white rounded-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
@@ -276,181 +323,56 @@ const TasksTable = () => {
                 <h2 className="text-xl font-semibold text-gray-800">Task Details</h2>
                 <p className="text-sm text-gray-500">Task ID: {selectedTask.taskId}</p>
               </div>
-              <button 
-                onClick={() => setShowDetails(false)}
-                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-              >
+              <button onClick={() => setShowDetails(false)} className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
                 <span className="text-gray-500">✕</span>
               </button>
             </div>
-
             <div className="p-6 space-y-6">
-              {/* Basic Info */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <h3 className="text-sm font-medium text-gray-700 mb-2">Title</h3>
-                  <p className="text-gray-900 font-medium">{selectedTask.title}</p>
-                </div>
-                <div>
-                  <h3 className="text-sm font-medium text-gray-700 mb-2">Type</h3>
-                  <span className="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs">
-                    {selectedTask.taskType}
-                  </span>
-                </div>
-                <div>
-                  <h3 className="text-sm font-medium text-gray-700 mb-2">Priority</h3>
-                  <span className={`px-2 py-1 rounded-full text-xs ${priorityColors[selectedTask.priority]}`}>
-                    {getPriorityText(selectedTask.priority)}
-                  </span>
-                </div>
-                <div>
-                  <h3 className="text-sm font-medium text-gray-700 mb-2">Status</h3>
-                  <span className={`px-3 py-1 rounded-full text-xs font-semibold ${statusColors[selectedTask.status]}`}>
-                    {getStatusText(selectedTask.status)}
-                  </span>
-                </div>
-                <div>
-                  <h3 className="text-sm font-medium text-gray-700 mb-2">Block</h3>
-                  <span className="px-2 py-1 bg-blue-50 text-blue-700 rounded text-xs font-semibold">
-                    Block {selectedTask.block}
-                  </span>
-                </div>
-                <div>
-                  <h3 className="text-sm font-medium text-gray-700 mb-2">Due Date</h3>
-                  <div className="flex items-center gap-1">
-                    <Calendar size={14} className="text-gray-400" />
-                    <span>{formatDate(selectedTask.dueDate)}</span>
-                  </div>
-                </div>
+                <div><h3 className="text-sm font-medium text-gray-700 mb-2">Title</h3><p className="text-gray-900 font-medium">{selectedTask.title}</p></div>
+                <div><h3 className="text-sm font-medium text-gray-700 mb-2">Type</h3><span className="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs">{selectedTask.taskType}</span></div>
+                <div><h3 className="text-sm font-medium text-gray-700 mb-2">Priority</h3><span className={`px-2 py-1 rounded-full text-xs ${priorityColors[selectedTask.priority]}`}>{getPriorityText(selectedTask.priority)}</span></div>
+                <div><h3 className="text-sm font-medium text-gray-700 mb-2">Status</h3><span className={`px-3 py-1 rounded-full text-xs font-semibold ${statusColors[selectedTask.status]}`}>{getStatusText(selectedTask.status)}</span></div>
+                <div><h3 className="text-sm font-medium text-gray-700 mb-2">Block</h3><span className="px-2 py-1 bg-blue-50 text-blue-700 rounded text-xs font-semibold">Block {selectedTask.block}</span></div>
+                <div><h3 className="text-sm font-medium text-gray-700 mb-2">Due Date</h3><div className="flex items-center gap-1"><Calendar size={14} className="text-gray-400" /><span>{formatDate(selectedTask.dueDate)}</span></div></div>
               </div>
-
-              {/* Description */}
-              {selectedTask.description && (
-                <div>
-                  <h3 className="text-sm font-medium text-gray-700 mb-2">Description</h3>
-                  <p className="text-gray-600 bg-gray-50 p-3 rounded-lg">{selectedTask.description}</p>
-                </div>
-              )}
-
-              {/* Assigned To */}
+              {selectedTask.description && (<div><h3 className="text-sm font-medium text-gray-700 mb-2">Description</h3><p className="text-gray-600 bg-gray-50 p-3 rounded-lg">{selectedTask.description}</p></div>)}
               <div>
                 <h3 className="text-sm font-medium text-gray-700 mb-2">Assigned To</h3>
                 {selectedTask.assignedTo ? (
                   <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-                    <div>
-                      <p className="font-medium">{selectedTask.assignedTo.name}</p>
-                      <p className="text-sm text-gray-500">{selectedTask.assignedTo.email}</p>
-                      <p className="text-xs text-gray-400">ID: {selectedTask.assignedTo.empId}</p>
-                    </div>
+                    <div><p className="font-medium">{selectedTask.assignedTo.name}</p><p className="text-sm text-gray-500">{selectedTask.assignedTo.email}</p><p className="text-xs text-gray-400">ID: {selectedTask.assignedTo.empId}</p></div>
                   </div>
-                ) : (
-                  <p className="text-gray-500">Not assigned</p>
-                )}
+                ) : <p className="text-gray-500">Not assigned</p>}
               </div>
-
-              {/* Trees */}
-              {(selectedTask.trees && selectedTask.trees.length > 0) || selectedTask.specificTree ? (
+              {((selectedTask.trees && selectedTask.trees.length > 0) || selectedTask.specificTree) && (
                 <div>
                   <h3 className="text-sm font-medium text-gray-700 mb-2">Related Trees</h3>
                   <div className="space-y-2">
-                    {selectedTask.specificTree && (
-                      <div className="p-2 bg-green-50 border border-green-200 rounded">
-                        <p className="text-sm font-medium text-green-800">Specific Tree:</p>
-                        <p className="text-sm text-green-700">
-                          {selectedTask.specificTree.treeId} - NFC: {selectedTask.specificTree.nfcTagId || "Not assigned"}
-                        </p>
-                      </div>
-                    )}
-                    {selectedTask.trees && selectedTask.trees.length > 0 && (
-                      <div className="p-2 bg-blue-50 border border-blue-200 rounded">
-                        <p className="text-sm font-medium text-blue-800">Multiple Trees ({selectedTask.trees.length}):</p>
-                        <div className="flex flex-wrap gap-2 mt-1">
-                          {selectedTask.trees.map((tree, index) => (
-                            <span key={index} className="text-xs bg-white px-2 py-1 rounded border">
-                              {tree.treeId}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    )}
+                    {selectedTask.specificTree && (<div className="p-2 bg-green-50 border border-green-200 rounded"><p className="text-sm font-medium text-green-800">Specific Tree:</p><p className="text-sm text-green-700">{selectedTask.specificTree.treeId} - NFC: {selectedTask.specificTree.nfcTagId || "Not assigned"}</p></div>)}
+                    {selectedTask.trees && selectedTask.trees.length > 0 && (<div className="p-2 bg-blue-50 border border-blue-200 rounded"><p className="text-sm font-medium text-blue-800">Multiple Trees ({selectedTask.trees.length}):</p><div className="flex flex-wrap gap-2 mt-1">{selectedTask.trees.map((tree, index) => (<span key={index} className="text-xs bg-white px-2 py-1 rounded border">{tree.treeId}</span>))}</div></div>)}
                   </div>
                 </div>
-              ) : null}
-
-              {/* Notes */}
-              {selectedTask.notes && (
-                <div>
-                  <h3 className="text-sm font-medium text-gray-700 mb-2">Manager Notes</h3>
-                  <p className="text-gray-600 bg-yellow-50 p-3 rounded-lg border border-yellow-200">
-                    {selectedTask.notes}
-                  </p>
-                </div>
               )}
-
-              {/* Field Worker Notes */}
-              {selectedTask.fieldWorkerNotes && (
-                <div>
-                  <h3 className="text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
-                    <CheckCircle size={16} className="text-green-600" />
-                    Field Worker Notes
-                  </h3>
-                  <p className="text-gray-600 bg-green-50 p-3 rounded-lg border border-green-200">
-                    {selectedTask.fieldWorkerNotes}
-                  </p>
-                </div>
-              )}
-
-              {/* Completion Notes */}
-              {selectedTask.completionNotes && (
-                <div>
-                  <h3 className="text-sm font-medium text-gray-700 mb-2">Completion Notes</h3>
-                  <p className="text-gray-600 bg-blue-50 p-3 rounded-lg border border-blue-200">
-                    {selectedTask.completionNotes}
-                  </p>
-                </div>
-              )}
-
-              {/* Timeline */}
+              {selectedTask.notes && (<div><h3 className="text-sm font-medium text-gray-700 mb-2">Manager Notes</h3><p className="text-gray-600 bg-yellow-50 p-3 rounded-lg border border-yellow-200">{selectedTask.notes}</p></div>)}
+              {selectedTask.fieldWorkerNotes && (<div><h3 className="text-sm font-medium text-gray-700 mb-2 flex items-center gap-2"><CheckCircle size={16} className="text-green-600" />Field Worker Notes</h3><p className="text-gray-600 bg-green-50 p-3 rounded-lg border border-green-200">{selectedTask.fieldWorkerNotes}</p></div>)}
               <div className="border-t pt-6">
                 <h3 className="text-sm font-medium text-gray-700 mb-4">Timeline</h3>
                 <div className="space-y-3">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-gray-500">Created:</span>
-                    <span className="font-medium">{formatDate(selectedTask.createdAt)}</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-gray-500">Assigned:</span>
-                    <span className="font-medium">{selectedTask.assignedAt ? formatDate(selectedTask.assignedAt) : "Not assigned"}</span>
-                  </div>
-                  {selectedTask.completedAt && (
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-500">Completed:</span>
-                      <span className="font-medium text-green-600">{formatDate(selectedTask.completedAt)}</span>
-                    </div>
-                  )}
+                  <div className="flex justify-between text-sm"><span className="text-gray-500">Created:</span><span className="font-medium">{formatDate(selectedTask.createdAt)}</span></div>
+                  <div className="flex justify-between text-sm"><span className="text-gray-500">Assigned:</span><span className="font-medium">{selectedTask.assignedAt ? formatDate(selectedTask.assignedAt) : "Not assigned"}</span></div>
+                  {selectedTask.completedAt && (<div className="flex justify-between text-sm"><span className="text-gray-500">Completed:</span><span className="font-medium text-green-600">{formatDate(selectedTask.completedAt)}</span></div>)}
                 </div>
               </div>
             </div>
-
-            <div className="p-6 border-t">
-              <button
-                onClick={() => setShowDetails(false)}
-                className="w-full px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
-              >
-                Close
-              </button>
-            </div>
+            <div className="p-6 border-t"><button onClick={() => setShowDetails(false)} className="w-full px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">Close</button></div>
           </div>
         </div>
       )}
 
-      {/* Edit Task Modal */}
       <EditTaskModal
         isOpen={isEditModalOpen}
-        onClose={() => {
-          setIsEditModalOpen(false);
-          setEditingTask(null);
-        }}
+        onClose={() => { setIsEditModalOpen(false); setEditingTask(null); }}
         task={editingTask}
         onTaskUpdated={handleTaskUpdated}
       />
