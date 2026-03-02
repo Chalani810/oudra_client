@@ -22,12 +22,12 @@ const SidePanel = () => {
       path: "/treemgt",
       children: [
         { name: "IoT Sensor Data", path: "/iot-sensor-data" },
-        { name: "Resin Analysis & AI Insights", path: "/resin-dashboard" },
+        { name: "Resin Analysis & AI Insights", path: "/resin-analysis-table" },
         { name: "Blockchain Certificates", path: "/blockchain-certificates" }
       ]
     },
     { name: "Tasks & Workforce", path: "/taskmgt" },
-    { name: "Investments", path: "" },
+    { name: "Investments", path: "/investor-management" },
     { name: "Employees", path: "/employee-mgt" },
     { name: "Customers", path: "" },
     { name: "Settings", path: "" },

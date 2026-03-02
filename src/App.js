@@ -48,7 +48,10 @@ import HeatmapViewer from "./pages/HeatmapViewer";
 import ResinHistoryDetail from "./pages/ResinHistoryDetail";
 import ResinAnalysisTable from "./pages/ResinAnalysisTable";
 
-// Public Pages
+import InvestorCertificateManager from "./pages/InvestorCertificateManager";
+import Certificate from "./pages/Certificate";
+
+// Public pages
 import AboutUs from "./pages/AboutUs";
 import SignUpPage from "./pages/SignUp";
 import LoginPage from "./pages/SignInPage";
@@ -98,8 +101,10 @@ function AppWithRoutes() {
     location.pathname === "/treemgt" ||
     location.pathname === "/admindashboard" ||
     location.pathname === "/taskmgt" ||
+    location.pathname.startsWith("/certificates") ||
     location.pathname === "/employee-mgt" ||
-    location.pathname === "/CertificateCard";
+    location.pathname === "/CertificateCard" ||
+    location.pathname === "/investor-management";
 
   // SignIn route logic
   const getSignInElement = () => {
@@ -142,6 +147,8 @@ function AppWithRoutes() {
         <Route path="/adminaddevent" element={<AdminRoute><AdminAddEvent /></AdminRoute>} />
         <Route path="/adminproduct" element={<AdminRoute><AdminProduct /></AdminRoute>} />
         <Route path="/admin-bills" element={<AdminRoute><AdminBills /></AdminRoute>} />
+        <Route path="/investor-management" element={<AdminRoute><InvestorCertificateManager /></AdminRoute>} />
+        <Route path="/certificates/:certificateId" element={<Certificate/>} />
         <Route
           path="/CertificateCard"
           element={
