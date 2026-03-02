@@ -1,7 +1,8 @@
-// oudra-client/src/services/employeeService.js
+// oudra_client/src/services/employeeService.js
 //  1. Added createLoginAccount() — calls POST /auth/create-account with manager's JWT token
 //  2. Added checkLoginAccount() — calls GET /auth/users to check if a login account already exists for an employee email
 //  3. Fixed createEmployee() — profileImg field name corrected (was "file", should match multer field "profileImg")
+//  4. FIXED: getAuthHeaders() now used in ALL methods (getAllEmployees, createEmployee, updateEmployee, deleteEmployee)
 
 import axios from "axios";
 
@@ -20,7 +21,7 @@ const getAuthHeaders = () => {
 export const employeeService = {
   getAllEmployees: async () => {
     try {
-      const response = await axios.get(`${API_URL}/employee`);
+      const response = await axios.get(`${API_URL}/employee`, getAuthHeaders());
       return response.data;
     } catch (error) {
       console.error("Error fetching employees:", error);
@@ -40,8 +41,12 @@ export const employeeService = {
         formData.append("profileImg", employeeData.profileImg);
       }
 
+      const token = localStorage.getItem("token");
       const response = await axios.post(`${API_URL}/employee`, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
       });
       return response.data;
     } catch (error) {
@@ -63,8 +68,12 @@ export const employeeService = {
         formData.append("profileImg", employeeData.profileImg);
       }
 
+      const token = localStorage.getItem("token");
       const response = await axios.put(`${API_URL}/employee/${id}`, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
       });
       return response.data;
     } catch (error) {
@@ -75,7 +84,7 @@ export const employeeService = {
 
   deleteEmployee: async (id) => {
     try {
-      const response = await axios.delete(`${API_URL}/employee/${id}`);
+      const response = await axios.delete(`${API_URL}/employee/${id}`, getAuthHeaders());
       return response.data;
     } catch (error) {
       console.error("Error deleting employee:", error);
@@ -83,8 +92,7 @@ export const employeeService = {
     }
   },
 
-  // NEW: Creates a login account in the users collection for an existing employee
-  // linkedRecordId = the employee's _id from the employees collection
+  // Creates a login account in the users collection for an existing employee
   createLoginAccount: async (linkedRecordId) => {
     try {
       const response = await axios.post(
@@ -102,8 +110,7 @@ export const employeeService = {
     }
   },
 
-  // NEW: Check if a login account already exists for a given email
-  // Returns { exists: true/false }
+  // Check if a login account already exists for a given email
   checkLoginAccount: async (email) => {
     try {
       const response = await axios.get(
@@ -117,7 +124,6 @@ export const employeeService = {
       return { exists };
     } catch (error) {
       console.error("Error checking login account:", error);
-      // Don't throw — treat as "unknown", let the create call handle the duplicate error
       return { exists: false };
     }
   },

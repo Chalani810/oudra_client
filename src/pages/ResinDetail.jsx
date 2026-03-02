@@ -4,6 +4,12 @@ import ResinTopbar from "../component/Resin/ResinTopbar";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 
+// Helper: get auth headers from localStorage token
+const getAuthHeaders = () => {
+  const token = localStorage.getItem("token");
+  return token ? { Authorization: `Bearer ${token}` } : {};
+};
+
 // Centralized Configuration - Single Source of Truth
 const STATUS_OPTIONS = {
   READY: {
@@ -206,7 +212,10 @@ const ResinDetail = () => {
   const loadData = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`http://localhost:5000/resin/record/${treeId}`);
+      const res = await axios.get(
+        `http://localhost:5000/resin/record/${treeId}`,
+        { headers: getAuthHeaders() }
+      );
       if (!res.data || !res.data.data) {
         setError("No analysis record found.");
         setLoading(false);
@@ -237,11 +246,10 @@ const updateStatus = async () => {
       url: `http://localhost:5000/resin/${analysis._id}/status`
     });
 
-    const res = await axios.patch(`http://localhost:5000/resin/${analysis._id}/status`, {
-      status: newStatus,
-      notes: workflowNotes,
-      performedBy: "Current User"
-    });
+    const res = await axios.patch(`http://localhost:5000/resin/${analysis._id}/status`,
+   { status: newStatus, notes: workflowNotes, performedBy: "Current User" },
+   { headers: getAuthHeaders() }
+ );
 
     console.log("Response from server:", res.data);
 
@@ -276,11 +284,15 @@ const updateStatus = async () => {
 
     setUpdating(true);
     try {
-      const res = await axios.post(`http://localhost:5000/resin/${analysis._id}/workflow-log`, {
-        action,
-        notes,
-        performedBy: "Current User" // Replace with actual user from auth
-      });
+      const res = await axios.post(
+        `http://localhost:5000/resin/${analysis._id}/workflow-log`,
+        {
+          action,
+          notes,
+          performedBy: "Current User"
+        },
+        { headers: getAuthHeaders() }
+      );
 
       if (res.data && res.data.data) {
         setAnalysis(res.data.data);

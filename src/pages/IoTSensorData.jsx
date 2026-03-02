@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
+const getAuthHeaders = () => {
+  const token = localStorage.getItem("token");
+  return token ? { Authorization: `Bearer ${token}` } : {};
+};
+
 export default function IotSensorData() {
   const [allData, setAllData] = useState([]); 
   const [loading, setLoading] = useState(true);
@@ -12,7 +17,9 @@ export default function IotSensorData() {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`${API_URL}/api/sensor/all`);
+      const response = await axios.get(`${API_URL}/api/sensor/all`, {
+        headers: getAuthHeaders(),
+      });
       if (response.data.success) {
         setAllData(response.data.data);
       }

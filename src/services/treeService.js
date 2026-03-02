@@ -1,6 +1,15 @@
 // path: oudra-client/src/services/treeService.js
 const API_BASE_URL = 'http://localhost:5000';
 
+// Helper: get auth headers from localStorage token
+const getAuthHeaders = () => {
+  const token = localStorage.getItem('token');
+  return {
+    'Content-Type': 'application/json',
+    ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+  };
+};
+
 export const treeService = {
   // ===== BASIC CRUD OPERATIONS =====
   
@@ -8,7 +17,9 @@ export const treeService = {
   getAllTrees: async () => {
     try {
       console.log("🌳 Fetching trees from:", `${API_BASE_URL}/api/trees`);
-      const response = await fetch(`${API_BASE_URL}/api/trees`);
+      const response = await fetch(`${API_BASE_URL}/api/trees`, {
+        headers: getAuthHeaders()
+      });
       
       if (!response.ok) {
         const errorText = await response.text();
@@ -19,22 +30,18 @@ export const treeService = {
       const data = await response.json();
       console.log("✅ Trees API response received");
       
-      // Handle different response formats
       if (Array.isArray(data)) {
         console.log(`✅ Found ${data.length} trees`);
         return data;
       }
-      
       if (data.data && Array.isArray(data.data)) {
         console.log(`✅ Found ${data.data.length} trees in data property`);
         return data.data;
       }
-      
       if (data.trees && Array.isArray(data.trees)) {
         console.log(`✅ Found ${data.trees.length} trees in trees property`);
         return data.trees;
       }
-      
       if (data.success && Array.isArray(data.data)) {
         console.log(`✅ Found ${data.data.length} trees in success.data`);
         return data.data;
@@ -45,7 +52,6 @@ export const treeService = {
       
     } catch (error) {
       console.error("❌ Error fetching trees:", error);
-      // Returning an empty array to prevent app crash
       return [];
     }
   },
@@ -54,7 +60,9 @@ export const treeService = {
   getTreeById: async (treeId) => {
     try {
       console.log(`🔍 Fetching tree ${treeId} from:`, `${API_BASE_URL}/api/trees/${treeId}`);
-      const response = await fetch(`${API_BASE_URL}/api/trees/${treeId}`);
+      const response = await fetch(`${API_BASE_URL}/api/trees/${treeId}`, {
+        headers: getAuthHeaders()
+      });
       
       if (!response.ok) {
         const errorText = await response.text();
@@ -81,9 +89,7 @@ export const treeService = {
       console.log("📝 Creating tree with:", payload);
       const response = await fetch(`${API_BASE_URL}/api/trees`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: getAuthHeaders(),
         body: JSON.stringify(payload),
       });
       
@@ -111,9 +117,7 @@ export const treeService = {
       console.log(`✏️ Updating tree ${treeId}:`, payload);
       const response = await fetch(`${API_BASE_URL}/api/trees/${treeId}`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: getAuthHeaders(),
         body: JSON.stringify(payload),
       });
       
@@ -140,9 +144,7 @@ export const treeService = {
       console.log(`🗑️ Deleting tree ${treeId}`);
       const response = await fetch(`${API_BASE_URL}/api/trees/${treeId}`, {
         method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: getAuthHeaders(),
         body: JSON.stringify(payload),
       });
       
@@ -170,9 +172,7 @@ export const treeService = {
       console.log(`📋 Updating tree profile ${treeId}:`, payload);
       const response = await fetch(`${API_BASE_URL}/api/trees/${treeId}/profile`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: getAuthHeaders(),
         body: JSON.stringify(payload),
       });
       
@@ -189,16 +189,14 @@ export const treeService = {
   },
 
   // ===== SPECIALIZED UPDATES =====
-  
+
   // MOBILE APP update (for field workers)
   mobileUpdateTree: async (treeId, updates) => {
     try {
       console.log(`📱 Mobile updating tree ${treeId}:`, updates);
       const response = await fetch(`${API_BASE_URL}/api/trees/${treeId}/mobile-update`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: getAuthHeaders(),
         body: JSON.stringify(updates),
       });
       
@@ -220,9 +218,7 @@ export const treeService = {
       console.log(`📱 Mobile updating tree profile ${treeId}:`, updates);
       const response = await fetch(`${API_BASE_URL}/api/trees/${treeId}/mobile-profile`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: getAuthHeaders(),
         body: JSON.stringify(updates),
       });
       
@@ -250,9 +246,7 @@ export const treeService = {
       console.log(`🏷️ Updating NFC for tree ${treeId}:`, payload);
       const response = await fetch(`${API_BASE_URL}/api/trees/${treeId}/nfc`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: getAuthHeaders(),
         body: JSON.stringify(payload),
       });
       
@@ -279,9 +273,7 @@ export const treeService = {
       console.log(`📍 Updating GPS for tree ${treeId}:`, payload);
       const response = await fetch(`${API_BASE_URL}/api/trees/${treeId}/gps`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: getAuthHeaders(),
         body: JSON.stringify(payload),
       });
       
@@ -303,9 +295,7 @@ export const treeService = {
       console.log(`🔍 Updating inspection for tree ${treeId}:`, inspectionData);
       const response = await fetch(`${API_BASE_URL}/api/trees/${treeId}/inspection`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: getAuthHeaders(),
         body: JSON.stringify(inspectionData),
       });
       
@@ -327,9 +317,7 @@ export const treeService = {
       console.log(`🌱 Updating lifecycle for tree ${treeId}:`, lifecycleData);
       const response = await fetch(`${API_BASE_URL}/api/trees/${treeId}/lifecycle`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: getAuthHeaders(),
         body: JSON.stringify(lifecycleData),
       });
       
@@ -356,9 +344,7 @@ export const treeService = {
       console.log(`📁 Archiving tree ${treeId}`);
       const response = await fetch(`${API_BASE_URL}/api/trees/${treeId}/archive`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: getAuthHeaders(),
         body: JSON.stringify(payload),
       });
       
@@ -375,12 +361,14 @@ export const treeService = {
   },
 
   // ===== FIELD NOTES / OBSERVATIONS =====
-  
+
   // GET tree observations
   getTreeObservations: async (treeId) => {
     try {
       console.log(`📝 Fetching observations for tree ${treeId}`);
-      const response = await fetch(`${API_BASE_URL}/api/trees/${treeId}/observations`);
+      const response = await fetch(`${API_BASE_URL}/api/trees/${treeId}/observations`, {
+        headers: getAuthHeaders()
+      });
       
       if (!response.ok) {
         const errorData = await response.json();
@@ -395,7 +383,7 @@ export const treeService = {
     }
   },
 
-  // ADD observation (for mobile app)
+  // ADD observation
   addObservation: async (treeId, observationData) => {
     try {
       const userData = JSON.parse(localStorage.getItem('user'));
@@ -407,9 +395,7 @@ export const treeService = {
       console.log(`➕ Adding observation to tree ${treeId}:`, payload);
       const response = await fetch(`${API_BASE_URL}/api/trees/${treeId}/observations`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: getAuthHeaders(),
         body: JSON.stringify(payload),
       });
       
@@ -437,9 +423,7 @@ export const treeService = {
       console.log(`✏️ Updating observation ${observationId}:`, payload);
       const response = await fetch(`${API_BASE_URL}/api/observations/${observationId}`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: getAuthHeaders(),
         body: JSON.stringify(payload),
       });
       
@@ -466,9 +450,7 @@ export const treeService = {
       console.log(`🗑️ Deleting observation ${observationId}`);
       const response = await fetch(`${API_BASE_URL}/api/observations/${observationId}`, {
         method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: getAuthHeaders(),
         body: JSON.stringify(payload),
       });
       
@@ -485,12 +467,14 @@ export const treeService = {
   },
 
   // ===== TREE HISTORY =====
-  
+
   // GET tree history
   getTreeHistory: async (treeId) => {
     try {
       console.log(`📜 Fetching history for tree ${treeId}`);
-      const response = await fetch(`${API_BASE_URL}/api/trees/${treeId}/history`);
+      const response = await fetch(`${API_BASE_URL}/api/trees/${treeId}/history`, {
+        headers: getAuthHeaders()
+      });
       
       if (!response.ok) {
         const errorData = await response.json();
@@ -512,7 +496,9 @@ export const treeService = {
       const url = `${API_BASE_URL}/api/trees/${treeId}/history/filtered${params ? `?${params}` : ''}`;
       
       console.log(`🔍 Fetching filtered history for tree ${treeId}:`, url);
-      const response = await fetch(url);
+      const response = await fetch(url, {
+        headers: getAuthHeaders()
+      });
       
       if (!response.ok) {
         const errorData = await response.json();
@@ -528,16 +514,14 @@ export const treeService = {
   },
 
   // ===== ADDITIONAL OPERATIONS =====
-  
-  // Perform inoculation (for mobile app)
+
+  // Perform inoculation
   performInoculation: async (treeId, inoculationData) => {
     try {
       console.log(`💉 Performing inoculation for tree ${treeId}:`, inoculationData);
       const response = await fetch(`${API_BASE_URL}/api/trees/${treeId}/inoculate`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: getAuthHeaders(),
         body: JSON.stringify(inoculationData),
       });
       
@@ -557,7 +541,9 @@ export const treeService = {
   getTreeStatusSummary: async (treeId) => {
     try {
       console.log(`📊 Fetching status summary for tree ${treeId}`);
-      const response = await fetch(`${API_BASE_URL}/api/trees/${treeId}/status`);
+      const response = await fetch(`${API_BASE_URL}/api/trees/${treeId}/status`, {
+        headers: getAuthHeaders()
+      });
       
       if (!response.ok) {
         const errorData = await response.json();
@@ -573,16 +559,14 @@ export const treeService = {
   },
 
   // ===== BATCH & SYNC OPERATIONS =====
-  
+
   // Sync offline data from mobile app
   batchSync: async (syncData) => {
     try {
       console.log("🔄 Syncing offline data:", syncData);
       const response = await fetch(`${API_BASE_URL}/api/sync/batch`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: getAuthHeaders(),
         body: JSON.stringify(syncData),
       });
       
@@ -599,12 +583,14 @@ export const treeService = {
   },
 
   // ===== QUERY OPERATIONS =====
-  
+
   // Get trees by block
   getTreesByBlock: async (block) => {
     try {
       console.log(`🔍 Fetching trees in block: ${block}`);
-      const response = await fetch(`${API_BASE_URL}/api/trees?block=${encodeURIComponent(block)}`);
+      const response = await fetch(`${API_BASE_URL}/api/trees?block=${encodeURIComponent(block)}`, {
+        headers: getAuthHeaders()
+      });
       
       if (!response.ok) {
         const errorData = await response.json();
@@ -623,7 +609,9 @@ export const treeService = {
   getTreesByHealthStatus: async (status) => {
     try {
       console.log(`🔍 Fetching trees with health status: ${status}`);
-      const response = await fetch(`${API_BASE_URL}/api/trees?healthStatus=${encodeURIComponent(status)}`);
+      const response = await fetch(`${API_BASE_URL}/api/trees?healthStatus=${encodeURIComponent(status)}`, {
+        headers: getAuthHeaders()
+      });
       
       if (!response.ok) {
         const errorData = await response.json();
@@ -642,7 +630,9 @@ export const treeService = {
   getTreesReadyForAction: async (action) => {
     try {
       console.log(`🔍 Fetching trees ready for: ${action}`);
-      const response = await fetch(`${API_BASE_URL}/api/trees/ready/${action}`);
+      const response = await fetch(`${API_BASE_URL}/api/trees/ready/${action}`, {
+        headers: getAuthHeaders()
+      });
       
       if (!response.ok) {
         const errorData = await response.json();
@@ -661,7 +651,9 @@ export const treeService = {
   getTreeStatistics: async () => {
     try {
       console.log("📈 Fetching tree statistics");
-      const response = await fetch(`${API_BASE_URL}/api/trees/statistics`);
+      const response = await fetch(`${API_BASE_URL}/api/trees/statistics`, {
+        headers: getAuthHeaders()
+      });
       
       if (!response.ok) {
         const errorData = await response.json();
@@ -677,12 +669,14 @@ export const treeService = {
   },
 
   // ===== HELPER FUNCTIONS =====
-  
+
   // Test API connection
   testConnection: async () => {
     try {
       console.log("🧪 Testing API connection...");
-      const response = await fetch(`${API_BASE_URL}/api/trees`);
+      const response = await fetch(`${API_BASE_URL}/api/trees`, {
+        headers: getAuthHeaders()
+      });
       const isConnected = response.ok;
       console.log(`✅ API ${isConnected ? 'connected' : 'not connected'}:`, response.status);
       return {
