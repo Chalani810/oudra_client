@@ -1,17 +1,47 @@
 // oudra-client/src/components/EmployeeMgt/EmployeeMgtTopBar.jsx
+// CHANGES FROM EXISTING:
+//  1. Added collapsible filter panel with: Name, Employee ID, Email, Phone, Status
+//  2. Active filter count badge on Filter button
+//  3. Clear All Filters button
+//  4. onFilter prop added
+
 import React, { useState } from "react";
-import { Plus, Search, Filter } from "lucide-react";
+import { Plus, Search, Filter, X, ChevronDown, ChevronUp } from "lucide-react";
 import AddEmployeeModal from "./AddEmployeeModal";
 import { employeeService } from "../../services/employeeService";
 
-const EmployeeMgtTopBar = ({ onEmployeeAdded, onSearch }) => {
-  const [isAddModalOpen, setAddModalOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
+const EMPTY_FILTERS = {
+  name:     "",
+  empId:    "",
+  email:    "",
+  phone:    "",
+  isActive: "",
+};
+
+const EmployeeMgtTopBar = ({ onEmployeeAdded, onSearch, onFilter }) => {
+  const [isAddModalOpen,  setAddModalOpen]   = useState(false);
+  const [searchTerm,      setSearchTerm]     = useState("");
+  const [showFilterPanel, setShowFilterPanel] = useState(false);
+  const [filters,         setFilters]         = useState(EMPTY_FILTERS);
+
+  const activeFilterCount = Object.values(filters).filter(v => v !== "").length;
 
   const handleSearch = (e) => {
     const value = e.target.value;
     setSearchTerm(value);
     onSearch?.(value);
+  };
+
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+    const updated = { ...filters, [name]: value };
+    setFilters(updated);
+    onFilter?.(updated);
+  };
+
+  const handleClearFilters = () => {
+    setFilters(EMPTY_FILTERS);
+    onFilter?.(EMPTY_FILTERS);
   };
 
   const handleSaveEmployee = async (employeeData) => {
@@ -28,9 +58,10 @@ const EmployeeMgtTopBar = ({ onEmployeeAdded, onSearch }) => {
 
   return (
     <>
-      <div className="bg-white border-b p-4">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-          {/* Title and Add Button */}
+      <div className="bg-white border-b">
+        {/* ── Top row ───────────────────────────────────────────── */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 p-4">
+          {/* Title + Add button */}
           <div className="flex items-center gap-4">
             <h1 className="text-2xl font-bold text-gray-800">Employee Management</h1>
             <button
@@ -42,9 +73,8 @@ const EmployeeMgtTopBar = ({ onEmployeeAdded, onSearch }) => {
             </button>
           </div>
 
-          {/* Search and Filter */}
+          {/* Search + Filter toggle */}
           <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
-            {/* Search Bar */}
             <div className="relative flex-1 md:w-64">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
               <input
@@ -56,16 +86,119 @@ const EmployeeMgtTopBar = ({ onEmployeeAdded, onSearch }) => {
               />
             </div>
 
-            {/* Filter Button */}
-            <button className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+            <button
+              onClick={() => setShowFilterPanel(prev => !prev)}
+              className={`relative flex items-center gap-2 px-4 py-2 border rounded-lg transition-colors ${
+                showFilterPanel || activeFilterCount > 0
+                  ? "bg-green-50 border-green-500 text-green-700"
+                  : "border-gray-300 hover:bg-gray-50"
+              }`}
+            >
               <Filter size={20} />
               Filter
+              {activeFilterCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-green-600 text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
+                  {activeFilterCount}
+                </span>
+              )}
+              {showFilterPanel ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
             </button>
           </div>
         </div>
+
+        {/* ── Filter panel ──────────────────────────────────────── */}
+        {showFilterPanel && (
+          <div className="border-t px-4 py-4 bg-gray-50">
+            <div className="flex justify-between items-center mb-3">
+              <h3 className="text-sm font-semibold text-gray-700">
+                Filter Employees
+                {activeFilterCount > 0 && (
+                  <span className="ml-2 text-green-600">({activeFilterCount} active)</span>
+                )}
+              </h3>
+              {activeFilterCount > 0 && (
+                <button
+                  onClick={handleClearFilters}
+                  className="flex items-center gap-1 text-sm text-red-500 hover:text-red-700 transition-colors"
+                >
+                  <X size={14} />
+                  Clear All Filters
+                </button>
+              )}
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+              {/* Name */}
+              <div>
+                <label className="block text-xs font-medium text-gray-600 mb-1">Name</label>
+                <input
+                  type="text"
+                  name="name"
+                  value={filters.name}
+                  onChange={handleFilterChange}
+                  placeholder="Search name..."
+                  className="w-full p-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                />
+              </div>
+
+              {/* Employee ID */}
+              <div>
+                <label className="block text-xs font-medium text-gray-600 mb-1">Employee ID</label>
+                <input
+                  type="text"
+                  name="empId"
+                  value={filters.empId}
+                  onChange={handleFilterChange}
+                  placeholder="e.g. FW-2026..."
+                  className="w-full p-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                />
+              </div>
+
+              {/* Email */}
+              <div>
+                <label className="block text-xs font-medium text-gray-600 mb-1">Email</label>
+                <input
+                  type="text"
+                  name="email"
+                  value={filters.email}
+                  onChange={handleFilterChange}
+                  placeholder="Search email..."
+                  className="w-full p-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                />
+              </div>
+
+              {/* Phone */}
+              <div>
+                <label className="block text-xs font-medium text-gray-600 mb-1">Phone</label>
+                <input
+                  type="text"
+                  name="phone"
+                  value={filters.phone}
+                  onChange={handleFilterChange}
+                  placeholder="+94..."
+                  className="w-full p-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                />
+              </div>
+
+              {/* Status */}
+              <div>
+                <label className="block text-xs font-medium text-gray-600 mb-1">Status</label>
+                <select
+                  name="isActive"
+                  value={filters.isActive}
+                  onChange={handleFilterChange}
+                  className="w-full p-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                >
+                  <option value="">All Statuses</option>
+                  <option value="true">Active</option>
+                  <option value="false">Inactive</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
-      {/* Add Employee Modal */}
       <AddEmployeeModal
         isOpen={isAddModalOpen}
         onClose={() => setAddModalOpen(false)}

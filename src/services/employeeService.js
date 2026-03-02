@@ -1,13 +1,27 @@
-// oudra-client/src/services/employeeService.js
+// oudra_client/src/services/employeeService.js
+//  1. Added createLoginAccount() — calls POST /auth/create-account with manager's JWT token
+//  2. Added checkLoginAccount() — calls GET /auth/users to check if a login account already exists for an employee email
+//  3. Fixed createEmployee() — profileImg field name corrected (was "file", should match multer field "profileImg")
+//  4. FIXED: getAuthHeaders() now used in ALL methods (getAllEmployees, createEmployee, updateEmployee, deleteEmployee)
+
 import axios from "axios";
 
 const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
+// Helper: get auth headers using the manager's token stored in localStorage
+const getAuthHeaders = () => {
+  const token = localStorage.getItem("token");
+  return {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+};
+
 export const employeeService = {
   getAllEmployees: async () => {
     try {
-      // this is pointing to /employee not /api/employee
-      const response = await axios.get(`${API_URL}/employee`);
+      const response = await axios.get(`${API_URL}/employee`, getAuthHeaders());
       return response.data;
     } catch (error) {
       console.error("Error fetching employees:", error);
@@ -21,15 +35,17 @@ export const employeeService = {
       formData.append("name", employeeData.name);
       formData.append("email", employeeData.email);
       formData.append("phone", employeeData.phone);
-      formData.append("occupation", employeeData.occupation);
-      
-      if (employeeData.file) {
-        formData.append("profileImg", employeeData.file);
+
+      // FIXED: field name matches multer config in employeeRoutes.js ("profileImg")
+      if (employeeData.profileImg) {
+        formData.append("profileImg", employeeData.profileImg);
       }
 
+      const token = localStorage.getItem("token");
       const response = await axios.post(`${API_URL}/employee`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
         },
       });
       return response.data;
@@ -45,15 +61,18 @@ export const employeeService = {
       formData.append("name", employeeData.name);
       formData.append("email", employeeData.email);
       formData.append("phone", employeeData.phone);
-      formData.append("occupation", employeeData.occupation);
-      
-      if (employeeData.file) {
-        formData.append("profileImg", employeeData.file);
+      if (employeeData.isActive !== undefined) {
+        formData.append("isActive", employeeData.isActive);
+      }
+      if (employeeData.profileImg) {
+        formData.append("profileImg", employeeData.profileImg);
       }
 
+      const token = localStorage.getItem("token");
       const response = await axios.put(`${API_URL}/employee/${id}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
         },
       });
       return response.data;
@@ -65,11 +84,47 @@ export const employeeService = {
 
   deleteEmployee: async (id) => {
     try {
-      const response = await axios.delete(`${API_URL}/employee/${id}`);
+      const response = await axios.delete(`${API_URL}/employee/${id}`, getAuthHeaders());
       return response.data;
     } catch (error) {
       console.error("Error deleting employee:", error);
       throw error;
+    }
+  },
+
+  // Creates a login account in the users collection for an existing employee
+  createLoginAccount: async (linkedRecordId) => {
+    try {
+      const response = await axios.post(
+        `${API_URL}/auth/create-account`,
+        {
+          linkedRecordId,
+          role: "fieldworker",
+        },
+        getAuthHeaders()
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error creating login account:", error);
+      throw error;
+    }
+  },
+
+  // Check if a login account already exists for a given email
+  checkLoginAccount: async (email) => {
+    try {
+      const response = await axios.get(
+        `${API_URL}/auth/users?search=${encodeURIComponent(email)}&role=fieldworker`,
+        getAuthHeaders()
+      );
+      const users = response.data?.users || [];
+      const exists = users.some(
+        (u) => u.email.toLowerCase() === email.toLowerCase()
+      );
+      return { exists };
+    } catch (error) {
+      console.error("Error checking login account:", error);
+      return { exists: false };
     }
   },
 };
