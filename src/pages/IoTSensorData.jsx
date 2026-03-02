@@ -4,6 +4,11 @@ import axios from "axios";
 import { Eye, Trash2, RefreshCw, Filter } from "lucide-react";
 import SidePanel from "../component/SidePanel";
 
+const getAuthHeaders = () => {
+  const token = localStorage.getItem("token");
+  return token ? { Authorization: `Bearer ${token}` } : {};
+};
+
 export default function IotSensorData() {
   const [allData, setAllData] = useState([]); 
   const [loading, setLoading] = useState(true);
@@ -17,7 +22,9 @@ export default function IotSensorData() {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`${API_URL}/api/sensor/all`);
+      const response = await axios.get(`${API_URL}/api/sensor/all`, {
+        headers: getAuthHeaders(),
+      });
       if (response.data.success) {
         setAllData(response.data.data);
       }
