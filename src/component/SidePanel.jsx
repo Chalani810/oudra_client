@@ -1,4 +1,4 @@
-
+// src/component/SidePanel.js
 import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
@@ -6,7 +6,14 @@ const SidePanel = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user"));
-  const [isTreeManagementOpen, setIsTreeManagementOpen] = useState(false);
+
+  // Auto-open Tree Management if current path is a child route
+  const [isTreeManagementOpen, setIsTreeManagementOpen] = useState(
+    location.pathname.startsWith("/iot-sensor-data") ||
+    location.pathname.startsWith("/resin-dashboard") ||
+    location.pathname.startsWith("/blockchain-certificates") ||
+    location.pathname === "/treemgt"
+  );
 
   const menuItems = [
     { name: "Dashboard", path: "/admindashboard" },
@@ -20,7 +27,7 @@ const SidePanel = () => {
       ]
     },
     { name: "Tasks & Workforce", path: "/taskmgt" },
-    { name: "Investments", path: "" },
+    { name: "Investments", path: "/investor-management" },
     { name: "Employees", path: "/employee-mgt" },
     { name: "Customers", path: "" },
     { name: "Settings", path: "" },
@@ -42,7 +49,7 @@ const SidePanel = () => {
   };
 
   return (
-    <aside className="w-64 bg-white p-4 border-r fixed h-full flex flex-col">
+    <aside className="w-64 bg-white p-4 border-r fixed h-full flex flex-col z-10">
       {/* Logo */}
       <div className="text-2xl font-extrabold text-black">
         <span className="text-green-600">Ou</span>dra
@@ -59,37 +66,38 @@ const SidePanel = () => {
             <div key={item.name} className="flex flex-col">
               {hasChildren ? (
                 <>
-                  {/* Tree Management with Dropdown */}
                   <button
                     onClick={() => {
-                    navigate(item.path); // Navigate to /treemgt
-                    toggleTreeManagement(); // Toggle dropdown
-                  }}
-                  className={`px-3 py-2 rounded hover:bg-green-100 transition text-left flex items-center justify-between ${
-                  isActive
-                  ? "bg-green-500 text-white font-semibold"
-                  : "text-gray-700"
-              }`}
+                      if (item.path) {
+                        navigate(item.path);
+                      }
+                      toggleTreeManagement();
+                    }}
+                    className={`px-3 py-2 rounded hover:bg-green-100 transition text-left flex items-center justify-between ${
+                      isActive
+                      ? "bg-green-500 text-white font-semibold"
+                      : "text-gray-700"
+                    }`}
                   >
                     <span>{item.name}</span>
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    className={`h-4 w-4 transition-transform ${
-      isTreeManagementOpen ? "rotate-180" : ""
-    }`}
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth={2}
-      d="M19 9l-7 7-7-7"
-    />
-  </svg>
-</button>
-                  
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className={`h-4 w-4 transition-transform ${
+                        isTreeManagementOpen ? "rotate-180" : ""
+                      }`}
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
+                  </button>
+
                   {/* Dropdown Content */}
                   {isTreeManagementOpen && (
                     <div className="ml-4 mt-1 flex flex-col gap-1 border-l-2 border-green-300 pl-2">
@@ -113,7 +121,6 @@ const SidePanel = () => {
                   )}
                 </>
               ) : (
-                /* Regular Menu Item */
                 <Link
                   to={item.path}
                   className={`px-3 py-2 rounded hover:bg-green-100 transition ${
@@ -133,49 +140,29 @@ const SidePanel = () => {
       {/* Fixed Profile and Logout Section at Bottom */}
       <div className="mt-auto pb-4 border-t pt-4 bg-white sticky bottom-0">
         <div className="flex items-center gap-3 mb-3">
-          {/* Profile Image */}
           <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center overflow-hidden">
             {user?.photoUrl ? (
-              <img
-                src={user.photoUrl}
-                alt="Profile"
-                className="w-full h-full object-cover"
-              />
+              <img src={user.photoUrl} alt="Profile" className="w-full h-full object-cover" />
             ) : (
               <span className="text-gray-600 text-lg font-semibold">
-                {user?.name?.charAt(0).toUpperCase() || "U"}
+                {user?.firstName?.charAt(0).toUpperCase() || user?.name?.charAt(0).toUpperCase() || "U"}
               </span>
             )}
           </div>
-
-          {/* User Name */}
           <div>
             <p className="font-medium text-gray-800">
-              {`${user?.firstName || ""} ${user?.lastName || ""}`.trim() ||
-                "User"}
+              {`${user?.firstName || ""} ${user?.lastName || ""}`.trim() || user?.name || "User"}
             </p>
             <p className="text-xs text-gray-500">{user?.role || "Admin"}</p>
           </div>
         </div>
 
-        {/* Logout Button */}
         <button
           onClick={handleLogout}
           className="w-full px-3 py-2 text-left rounded hover:bg-gray-100 text-gray-700 flex items-center gap-2"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-            />
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
           </svg>
           Logout
         </button>
