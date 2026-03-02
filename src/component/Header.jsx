@@ -75,16 +75,6 @@ const Header = () => {
         >
           Value
         </Link>
-        {isLoggedIn && (
-          <Link
-            to={`/orders/${user._id}`}
-            className={`text-black hover:text-green-600 ${
-              isActive(`/orders/${user._id}`) ? "text-green-600" : ""
-            }`}
-          >
-            Order History
-          </Link>
-        )}
         <Link
           to="/AboutUs"
           className={`text-black hover:text-green-600 ${
