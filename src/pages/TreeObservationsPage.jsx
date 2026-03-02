@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, Calendar, User, FileText } from "lucide-react";
+import { ArrowLeft, User, FileText } from "lucide-react";
 import { treeService } from "../services/treeService";
 
 const TreeObservationsPage = () => {
@@ -14,8 +14,9 @@ const TreeObservationsPage = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetchData();
-  }, [treeId]);
+  fetchData();
+   // eslint-disable-next-line react-hooks/exhaustive-deps
+}, [treeId]);
 
   const fetchData = async () => {
     try {

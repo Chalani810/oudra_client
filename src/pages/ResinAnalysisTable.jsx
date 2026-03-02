@@ -3,6 +3,12 @@ import SidePanel from "../component/SidePanel";
 import ResinTopbar from "../component/Resin/ResinTopbar";
 import axios from "axios";
 
+// Helper: get auth headers from localStorage token
+const getAuthHeaders = () => {
+  const token = localStorage.getItem("token");
+  return token ? { Authorization: `Bearer ${token}` } : {};
+};
+
 const ResinAnalysisTable = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -12,7 +18,9 @@ const ResinAnalysisTable = () => {
   useEffect(() => {
     const fetchResinData = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/resin");
+        const res = await axios.get("http://localhost:5000/resin", {
+          headers: getAuthHeaders(),
+        });
         setData(res.data.data);
       } catch (err) {
         setError("Failed to load resin analysis records");
