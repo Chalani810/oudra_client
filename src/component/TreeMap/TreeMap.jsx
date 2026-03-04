@@ -138,10 +138,7 @@ const TreeMap = () => {
               lng: tree.gps.lng
             }}
             onClick={() => handleMarkerClick(tree)}
-            icon={{
-              url: getMarkerIcon(tree.healthStatus),
-              scaledSize: window.google?.maps ? new window.google.maps.Size(32, 32) : undefined
-            }}
+            icon={getMarkerIcon(tree.healthStatus)}
             title={tree.treeId}
           />
         ))}
