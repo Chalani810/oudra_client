@@ -32,7 +32,6 @@ const priorityOptions = [
 const blockOptions = ["Block-A", "Block-B", "Block-C", "Block-D", "Block-E", "Block-F"];
 
 const statusOptions = [
-  { value: "pending", label: "Pending", color: "bg-yellow-100 text-yellow-800" },
   { value: "assigned", label: "Assigned", color: "bg-blue-100 text-blue-800" },
   { value: "in_progress", label: "In Progress", color: "bg-purple-100 text-purple-800" },
   { value: "completed", label: "Completed", color: "bg-green-100 text-green-800" },
