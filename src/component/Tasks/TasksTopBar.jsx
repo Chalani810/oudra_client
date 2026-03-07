@@ -19,10 +19,10 @@ const TASK_TYPES = [
 
 const PRIORITY_OPTIONS = ["low", "medium", "high", "urgent"];
 const BLOCK_OPTIONS    = ["Block-A", "Block-B", "Block-C", "Block-D", "Block-E", "Block-F"];
-const STATUS_OPTIONS   = ["pending", "assigned", "in_progress", "completed", "cancelled", "overdue"];
+const STATUS_OPTIONS = ["assigned", "in_progress", "completed", "cancelled", "overdue"];
 
 const STATUS_LABELS = {
-  pending: "Pending", assigned: "Assigned", in_progress: "In Progress",
+  assigned: "Assigned", in_progress: "In Progress",
   completed: "Completed", cancelled: "Cancelled", overdue: "Overdue"
 };
 
