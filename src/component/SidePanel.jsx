@@ -29,7 +29,7 @@ const SidePanel = () => {
     { name: "Tasks & Workforce", path: "/taskmgt" },
     { name: "Investments", path: "/investor-management" },
     { name: "Employees", path: "/employee-mgt" },
-    { name: "Customers", path: "" },
+    { name: "Investors", path: "/admin/manage-investor-logins" },
     { name: "Settings", path: "" },
   ];
 
