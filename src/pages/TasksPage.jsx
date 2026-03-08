@@ -1,9 +1,4 @@
 // oudra-client/src/pages/TasksPage.jsx
-// CHANGES FROM EXISTING:
-//  1. Added searchTerm and filters state
-//  2. Passes onSearch and onFilter to TasksTopBar
-//  3. Passes searchTerm and filters down to TasksTable
-
 import React, { useState } from "react";
 import TasksTopBar from "../component/Tasks/TasksTopBar";
 import TasksTable from "../component/Tasks/TasksTable";
