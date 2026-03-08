@@ -52,9 +52,9 @@ import InvestorCertificateManager from "./pages/InvestorCertificateManager";
 import Certificate from "./pages/Certificate";
 
 // ✅ Investor Portal
-import InvestorLoginPage from "./pages/InvestorLoginPage";
+
 import InvestorDashboard from "./pages/InvestorDashboard";
-import InvestorChangePassword from "./pages/InvestorChangePassword";
+
 import CreateInvestorLogin from './pages/CreateInvestorLogin';
 
 // Public pages
@@ -184,9 +184,9 @@ function AppWithRoutes() {
         <Route path="/iot-sensor-data" element={<AdminRoute><IoTSensorData /></AdminRoute>} />
 
         {/* ── Investor Portal Routes ────────────────────────────────── */}
-        <Route path="/investor/login" element={<InvestorLoginPage />} />
+
         <Route path="/investor/dashboard" element={<InvestorDashboard />} />
-        <Route path="/investor/change-password" element={<InvestorChangePassword />} />
+
         <Route path="/admin/manage-investor-logins" element={<AdminRoute><CreateInvestorLogin /></AdminRoute>} 
 />
 
