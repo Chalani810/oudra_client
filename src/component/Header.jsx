@@ -116,11 +116,6 @@ const Header = () => {
         {/* Conditional rendering based on login status */}
         {!isLoggedIn ? (
           <>
-            <Link to="/signup">
-              <button className="bg-white px-4 py-1 rounded-full shadow text-sm font-medium hover:shadow-md">
-                Sign Up
-              </button>
-            </Link>
             <Link to="/signin">
               <button className="bg-green-600 text-white px-4 py-1 rounded-full text-sm font-medium hover:bg-green-700">
                 Sign In

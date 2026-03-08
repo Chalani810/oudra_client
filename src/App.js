@@ -29,12 +29,14 @@ import AdminEvents from "./pages/AdminEvents";
 import AdminAddEvent from "./pages/AdminAddEvent";
 import AdminProduct from "./pages/AdminProduct";
 import AdminBills from "./pages/AdminBills";
+import CreateInvestorLogin from './pages/CreateInvestorLogin';
 
 // Customer Management
 import CustomerMgtPage from "./pages/CustomerMgtPage";
 
 // IoT Sensor Data
 import IoTSensorData from "./pages/IoTSensorData";
+
 
 // Employee Management
 import CertificateCard from "./pages/CertificateCard";
@@ -47,6 +49,7 @@ import ResinCompare from "./pages/ResinCompare";
 import HeatmapViewer from "./pages/HeatmapViewer";
 import ResinHistoryDetail from "./pages/ResinHistoryDetail";
 import ResinAnalysisTable from "./pages/ResinAnalysisTable";
+import ResinNotifications from './pages/ResinNotifications';
 
 import InvestorCertificateManager from "./pages/InvestorCertificateManager";
 import Certificate from "./pages/Certificate";
@@ -60,7 +63,6 @@ import ContactUs from "./pages/ContactUs";
 import Checkout from "./pages/Checkout";
 import FeedbackListPage from "./pages/FeedbackListPage";
 import ProfilePage from "./pages/CustomerProfilePage";
-import Cart from "./pages/UserCart";
 import Invoice from "./pages/Invoice";
 import OrderHistory from "./pages/OrderHistory";
 import CustomerViewEvent from "./pages/CustomerViewEvent";
@@ -69,14 +71,11 @@ import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import ResetPasswordForm from "./pages/ResetPasswordForm";
 import SettingsPage from "./pages/Settings";
 
-import { CartProvider } from "./CartContext";
 
 function App() {
   return (
     <Router>
-      <CartProvider>
         <AppWithRoutes />
-      </CartProvider>
     </Router>
   );
 }
@@ -104,7 +103,8 @@ function AppWithRoutes() {
     location.pathname.startsWith("/certificates") ||
     location.pathname === "/employee-mgt" ||
     location.pathname === "/CertificateCard" ||
-    location.pathname === "/investor-management";
+    location.pathname === "/investor-management"||
+    location.pathname === "/admin/manage-investor-logins";
 
   // SignIn route logic
   const getSignInElement = () => {
@@ -136,6 +136,7 @@ function AppWithRoutes() {
         <Route path="/heatmap-viewer" element={<AdminRoute><HeatmapViewer /></AdminRoute>} />
         <Route path="/resin-history-detail" element={<AdminRoute><ResinHistoryDetail /></AdminRoute>} />
         <Route path="/resin-analysis-table" element={<AdminRoute><ResinAnalysisTable /></AdminRoute>} />
+        <Route path="/admin/resin-alerts" element={<ResinNotifications />} />
         <Route path="/treemgt" element={<AdminRoute><TreeMgtPage /></AdminRoute>} />
         <Route path="/treeprofile/:treeId" element={<AdminRoute><TreeProfileScreen /></AdminRoute>} />
         <Route path="/admindashboard" element={<AdminRoute><OudraAdminDashboard /></AdminRoute>} />
@@ -175,12 +176,17 @@ function AppWithRoutes() {
         <Route path="/customers" element={<AdminRoute><CustomerMgtPage /></AdminRoute>} />
         <Route path="/settings" element={<AdminRoute><SettingsPage /></AdminRoute>} />
 
+        {/* To this: */}
+<Route 
+  path="/admin/manage-investor-logins" 
+  element={<AdminRoute><CreateInvestorLogin /></AdminRoute>} 
+/>
+
         {/* IoT Sensor Data - Using lowercase to match hideHeaderFooter */}
         <Route path="/iot-sensor-data" element={<AdminRoute><IoTSensorData /></AdminRoute>} />
 
         {/* User Routes */}
         <Route path="/customerprofile" element={<UserRoute><ProfilePage /></UserRoute>} />
-        <Route path="/cart" element={<UserRoute><Cart /></UserRoute>} />
         <Route path="/checkout" element={<UserRoute><Checkout /></UserRoute>} />
         <Route path="/invoice" element={<UserRoute><Invoice /></UserRoute>} />
         <Route path="/feedback" element={<UserRoute><FeedbackListPage /></UserRoute>} />
@@ -195,6 +201,7 @@ function AppWithRoutes() {
 
         {/* SignIn Route */}
         <Route path="/signin" element={getSignInElement()} />
+        
         
         {/* SignUp Route - Redirect to signin */}
         <Route path="/signup" element={<Navigate to="/signin" replace />} />
