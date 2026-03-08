@@ -194,7 +194,7 @@ const CreateInvestorLogin = () => {
                         ${
                           grantedAccess[inv._id]
                             ? "bg-green-700 cursor-default"
-                            : "bg-emerald-500 hover:bg-emerald-600"
+                            : "bg-emerald-700 hover:bg-emerald-800"
                         }`}
                       >
 
