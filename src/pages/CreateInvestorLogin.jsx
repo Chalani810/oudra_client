@@ -4,6 +4,8 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import SidePanel from "../component/SidePanel";
 
+
+
 const CreateInvestorLogin = () => {
   const [investors, setInvestors] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -40,12 +42,13 @@ const CreateInvestorLogin = () => {
     }
   };
 
-  // Create account
+  // 2. Handle Account Creation
   const handleCreateAccount = async (investorId, investorName) => {
     setSubmitting(investorId);
     setMessage({ type: '', text: '' });
 
     try {
+      // This hits: POST http://localhost:5000/api/auth/create-account
       const response = await axios.post(
         `${AUTH_URL}/create-account`,
         {

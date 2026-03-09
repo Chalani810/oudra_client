@@ -1,3 +1,4 @@
+// src/pages/InvestorDashboard.jsx
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -340,6 +341,7 @@ const ip = {
 
 // ── MAIN DASHBOARD ─────────────────────────────────────────────────────────────
 export default function InvestorDashboard() {
+  // ✅ useNavigate properly imported and used
   const navigate = useNavigate();
 
   const [tab,      setTab]      = useState("overview");
@@ -433,7 +435,10 @@ export default function InvestorDashboard() {
           ))}
         </nav>
         <div style={d.sideBottom}>
-          {/* UPDATED: Cleaned up buttons */}
+          {/* ✅ Fixed: onClick with navigate */}
+          <button onClick={() => navigate("/investor/change-password")} style={d.changePwBtn}>
+            🔐 Change Password
+          </button>
           <button onClick={handleLogout} style={d.logoutBtn}>← Sign Out</button>
         </div>
       </div>
@@ -532,6 +537,7 @@ const d = {
   navBtn: { display: "flex", alignItems: "center", gap: 10, padding: "12px 14px", borderRadius: 10, border: "none", background: "transparent", color: "#b7e4c7", fontSize: 14, cursor: "pointer", textAlign: "left" },
   navBtnActive: { background: "rgba(255,255,255,0.15)", color: "#fff", fontWeight: "bold" },
   sideBottom: { display: "flex", flexDirection: "column", gap: 8, marginTop: 20 },
+  changePwBtn: { padding: "10px 14px", background: "rgba(255,255,255,0.1)", color: "#b7e4c7", border: "1px solid rgba(255,255,255,0.2)", borderRadius: 8, fontSize: 13, cursor: "pointer" },
   logoutBtn: { padding: "10px 14px", background: "transparent", color: "#fca5a5", border: "1px solid rgba(252,165,165,0.3)", borderRadius: 8, fontSize: 13, cursor: "pointer" },
   main: { flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" },
   topbar: { display: "flex", justifyContent: "space-between", alignItems: "center", padding: "24px 32px", background: "#fff", borderBottom: "1px solid #e8f5e9" },

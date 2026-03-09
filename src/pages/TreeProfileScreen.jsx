@@ -2,10 +2,8 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { treeService } from "../services/treeService";
-import EditTreeModal from "../component/TreeMgt/EditTreeModal";
 
 // Helper functions
-
 // Calculate tree age in years and months
 const calculateTreeAge = (plantedDate) => {
   if (!plantedDate) return { years: 0, months: 0, totalMonths: 0 };
@@ -192,7 +190,6 @@ export default function TreeProfileScreen() {
 
   const [isAssignTaskOpen, setAssignTaskOpen] = useState(false);
   const [isDeleteOpen, setDeleteOpen] = useState(false);
-  const [isEditModalOpen, setEditModalOpen] = useState(false);
   const [isMarkHarvestedOpen, setMarkHarvestedOpen] = useState(false);
   const [harvestNotes, setHarvestNotes] = useState("");
 
@@ -340,13 +337,7 @@ export default function TreeProfileScreen() {
             <p className="text-gray-600 mt-1">Block: {tree.block || 'N/A'}</p>
           </div>
           <div className="flex gap-3">
-            <button
-              onClick={() => setEditModalOpen(true)}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium"
-              disabled={treeStatus.isFinal}
-            >
-              Edit Tree (Manager)
-            </button>
+          
             {harvestReady.ready && !treeStatus.isFinal && (
               <button
                 onClick={() => setMarkHarvestedOpen(true)}
@@ -693,13 +684,6 @@ export default function TreeProfileScreen() {
               >
                 Assign Task
               </button>
-
-              <button 
-                onClick={() => setEditModalOpen(true)} 
-                className="bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-medium transition duration-200"
-              >
-                Edit Tree (Manager)
-              </button>
             </>
           )}
 
@@ -747,17 +731,6 @@ export default function TreeProfileScreen() {
       </div>
 
       {/* MODALS */}
-
-      {/* EDIT TREE MODAL */}
-      {isEditModalOpen && (
-        <EditTreeModal
-          isOpen={isEditModalOpen}
-          onClose={() => setEditModalOpen(false)}
-          tree={tree}
-          onSave={fetchTreeData}
-        />
-      )}
-
       {/* MARK AS HARVESTED MODAL */}
       {isMarkHarvestedOpen && (
         <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50">
