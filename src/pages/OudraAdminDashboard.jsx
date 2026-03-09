@@ -398,8 +398,7 @@ const OudraAdminDashboard = () => {
       alert("Failed to capture map snapshot.");
     }
   };
-
-  const handleExportMap = downloadMapImage;
+  
   const handleMapSnapshot = downloadMapImage;
 
   return (
@@ -434,13 +433,6 @@ const OudraAdminDashboard = () => {
               <Camera size={18} className="mr-2" />
               Snapshot
             </button>
-            <button
-              onClick={fetchStats}
-              className="p-2 border border-gray-300 rounded-lg hover:bg-gray-100 transition-colors"
-              title="Refresh data"
-            >
-              <Filter size={20} />
-            </button>
           </div>
         </div>
 
@@ -449,19 +441,6 @@ const OudraAdminDashboard = () => {
           {/* 👇 ADDED ref={mapRef} HERE */}
           <div ref={mapRef} className="relative bg-white rounded-xl shadow-sm w-full h-[600px] overflow-hidden">
             <TreeMap />
-
-            {/* Action Buttons (Top centre) */}
-            <div className="absolute top-4 left-1/2 transform -translate-x-1/2 flex gap-3 z-10">
-              {/* REMOVED Generate Report Button */}
-              
-              <button
-                onClick={handleExportMap}
-                className="flex items-center bg-white px-3 py-2 rounded-lg shadow hover:bg-gray-100 transition-colors"
-              >
-                <Download size={18} className="mr-2" />
-                Export Map
-              </button>
-            </div>
 
             {/* Tree Health Status Legend (Bottom-left) */}
             <div className="absolute bottom-6 left-6 bg-white shadow-md rounded-xl p-4 z-10">
