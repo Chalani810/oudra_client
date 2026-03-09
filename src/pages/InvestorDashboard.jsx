@@ -26,8 +26,8 @@ function ROICalculator({ investment, treeCount }) {
       <p style={rc.sub}>Based on {fmt(base)} investment across {trees} trees</p>
       <div style={rc.summary}>
         {[
-          { label: "Initial Investment",     value: fmt(base),            color: "#1f2937" },
-          { label: "Projected Year 5 Value", value: fmt(base * 1.6),      color: "#2d6a4f" },
+          { label: "Initial Investment",     value: fmt(base),             color: "#1f2937" },
+          { label: "Projected Year 5 Value", value: fmt(base * 1.6),       color: "#2d6a4f" },
           { label: "Total Projected Return", value: `+${fmt(base * 0.6)}`, color: "#059669" },
         ].map((c, i) => (
           <div key={i} style={rc.summaryCard}>
@@ -254,9 +254,9 @@ function CertificateSection({ investorId, trees }) {
       </div>
       <div style={cs.grid}>
         {[
-          { num: harvested,                                                    label: "Harvested & Verified Trees" },
+          { num: harvested,                                                                label: "Harvested & Verified Trees" },
           { num: trees.filter(t => t.blockchainStatus === "Verified").length, label: "Blockchain Verified Trees" },
-          { num: trees.length,                                                 label: "Total Invested Trees" },
+          { num: trees.length,                                                                 label: "Total Invested Trees" },
         ].map((c, i) => (
           <div key={i} style={cs.card}>
             <span style={cs.cardNum}>{c.num}</span>
@@ -307,14 +307,14 @@ function InvestorProfile({ investor }) {
       <div style={ip.details}>
         <h4 style={ip.detailTitle}>Account Details</h4>
         {[
-          { label: "Full Name",        value: investor.name },
-          { label: "Email Address",    value: investor.email },
-          { label: "Phone Number",     value: investor.phone },
-          { label: "Investor ID",      value: investor.investorId },
+          { label: "Full Name",         value: investor.name },
+          { label: "Email Address",     value: investor.email },
+          { label: "Phone Number",      value: investor.phone },
+          { label: "Investor ID",       value: investor.investorId },
           { label: "Total Investment", value: `LKR ${investor.investment?.toLocaleString() || 0}` },
-          { label: "Trees Invested",   value: investor.investedTrees?.length || 0 },
-          { label: "Account Status",   value: investor.status },
-          { label: "Member Since",     value: investor.createdAt ? new Date(investor.createdAt).toLocaleDateString() : "—" },
+          { label: "Trees Invested",    value: investor.investedTrees?.length || 0 },
+          { label: "Account Status",    value: investor.status },
+          { label: "Member Since",      value: investor.createdAt ? new Date(investor.createdAt).toLocaleDateString() : "—" },
         ].map((row, i) => (
           <div key={i} style={ip.row}>
             <span style={ip.rowLabel}>{row.label}</span>
@@ -353,21 +353,29 @@ export default function InvestorDashboard() {
   const user = JSON.parse(localStorage.getItem("user") || "{}");
 
   useEffect(() => {
-    if (!user?._id) { navigate("/investor/login"); return; }
+    // UPDATED: Check for generic /login instead of /investor/login
+    if (!user?.id || user.role !== "investor") { 
+      navigate("/login"); 
+      return; 
+    }
     fetchData();
   }, []);
 
   const fetchData = async () => {
     setLoading(true);
     try {
+      // Logic to find the correct ID
       const investorId = user.linkedRecordId || user.investorDbId;
-      if (!investorId) throw new Error("Investor record not linked.");
+      if (!investorId) throw new Error("Investor record not linked to this login.");
+
       const [invRes, treeRes] = await Promise.all([
         fetch(`${API}/api/investors/${investorId}`,       { headers: getHeaders() }),
         fetch(`${API}/api/investors/${investorId}/trees`, { headers: getHeaders() }),
       ]);
+      
       const invData  = await invRes.json();
       const treeData = await treeRes.json();
+      
       if (invData.success)  setInvestor(invData.data);
       if (treeData.success) setTrees(treeData.data);
     } catch (err) {
@@ -377,11 +385,9 @@ export default function InvestorDashboard() {
     }
   };
 
-  // ✅ logout with navigate
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    navigate("/investor/login");
+    localStorage.clear();
+    navigate("/login");
   };
 
   const tabs = [
@@ -454,8 +460,8 @@ export default function InvestorDashboard() {
             <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
               <div style={d.statsRow}>
                 {[
-                  { label: "Total Investment",    value: `LKR ${investor?.investment?.toLocaleString() || 0}`, icon: "💰", color: "#2d6a4f" },
-                  { label: "Trees Invested",      value: trees.length,   icon: "🌳", color: "#059669" },
+                  { label: "Total Investment",     value: `LKR ${investor?.investment?.toLocaleString() || 0}`, icon: "💰", color: "#2d6a4f" },
+                  { label: "Trees Invested",       value: trees.length,   icon: "🌳", color: "#059669" },
                   { label: "Blockchain Verified", value: verifiedCount,  icon: "🔗", color: "#0891b2" },
                   { label: "Harvested Trees",     value: harvestedCount, icon: "🌾", color: "#d97706" },
                 ].map((s, i) => (

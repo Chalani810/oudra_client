@@ -22,7 +22,7 @@ import TreeMgtPage from "./pages/TreeMgtPage";
 import TreeProfileScreen from "./pages/TreeProfileScreen";
 import OudraAdminDashboard from "./pages/OudraAdminDashboard";
 import TreeObservationsPage from "./pages/TreeObservationsPage";
-import TreeHistoryPage from "./pages/TreeHistoryPage"; 
+import TreeHistoryPage from "./pages/TreeHistoryPage";
 import TasksPage from "./pages/TasksPage";
 import EmployeeMgtPage from "./pages/EmployeeMgtPage";
 import AdminEvents from "./pages/AdminEvents";
@@ -54,6 +54,12 @@ import ResinNotifications from './pages/ResinNotifications';
 import InvestorCertificateManager from "./pages/InvestorCertificateManager";
 import Certificate from "./pages/Certificate";
 
+// ✅ Investor Portal
+
+import InvestorDashboard from "./pages/InvestorDashboard";
+
+import CreateInvestorLogin from './pages/CreateInvestorLogin';
+
 // Public pages
 import AboutUs from "./pages/AboutUs";
 import SignUpPage from "./pages/SignUp";
@@ -82,7 +88,7 @@ function App() {
 
 function AppWithRoutes() {
   const location = useLocation();
-  const userData = JSON.parse(localStorage.getItem("user"));
+  const userData = JSON.parse(localStorage.getItem("user") || "null");
 
   // Header/Footer rendering condition
   const hideHeaderFooter =
@@ -96,21 +102,21 @@ function AppWithRoutes() {
     location.pathname === "/heatmap-viewer" ||
     location.pathname === "/resin-history-detail" ||
     location.pathname === "/resin-analysis-table" ||
-    location.pathname === "/iot-sensor-data" || // Keep as lowercase to match route
+    location.pathname === "/iot-sensor-data" ||
     location.pathname === "/treemgt" ||
     location.pathname === "/admindashboard" ||
     location.pathname === "/taskmgt" ||
     location.pathname.startsWith("/certificates") ||
     location.pathname === "/employee-mgt" ||
     location.pathname === "/CertificateCard" ||
-    location.pathname === "/investor-management"||
-    location.pathname === "/admin/manage-investor-logins";
+    location.pathname === "/investor-management" ||
+    location.pathname.startsWith("/investor"); // ✅ hides header for all investor pages
 
   // SignIn route logic
   const getSignInElement = () => {
     if (!userData) return <LoginPage />;
-    if (userData.role === "manager") return <Navigate to="/admindashboard" replace />;
-    if (userData.role === "investor") return <Navigate to="/investor-dashboard" replace />;
+    if (userData.role === "manager")  return <Navigate to="/admindashboard" replace />;
+    if (userData.role === "investor") return <Navigate to="/investor/dashboard" replace />;
     return <LoginPage />;
   };
 
@@ -129,7 +135,7 @@ function AppWithRoutes() {
       {!hideHeaderFooter && <Header />}
 
       <Routes>
-        {/* Admin Routes */}
+        {/* ── Admin Routes ─────────────────────────────────────────── */}
         <Route path="/resin-dashboard" element={<AdminRoute><ResinDashboard /></AdminRoute>} />
         <Route path="/resin-details/:treeId" element={<AdminRoute><ResinDetail /></AdminRoute>} />
         <Route path="/resin-compare" element={<AdminRoute><ResinCompare /></AdminRoute>} />
@@ -149,7 +155,7 @@ function AppWithRoutes() {
         <Route path="/adminproduct" element={<AdminRoute><AdminProduct /></AdminRoute>} />
         <Route path="/admin-bills" element={<AdminRoute><AdminBills /></AdminRoute>} />
         <Route path="/investor-management" element={<AdminRoute><InvestorCertificateManager /></AdminRoute>} />
-        <Route path="/certificates/:certificateId" element={<Certificate/>} />
+        <Route path="/certificates/:certificateId" element={<Certificate />} />
         <Route
           path="/CertificateCard"
           element={
@@ -185,29 +191,37 @@ function AppWithRoutes() {
         {/* IoT Sensor Data - Using lowercase to match hideHeaderFooter */}
         <Route path="/iot-sensor-data" element={<AdminRoute><IoTSensorData /></AdminRoute>} />
 
-        {/* User Routes */}
+        {/* ── Investor Portal Routes ────────────────────────────────── */}
+
+        <Route path="/investor/dashboard" element={<InvestorDashboard />} />
+
+        <Route path="/admin/manage-investor-logins" element={<AdminRoute><CreateInvestorLogin /></AdminRoute>} 
+/>
+
+        {/* ── User Routes ──────────────────────────────────────────── */}
         <Route path="/customerprofile" element={<UserRoute><ProfilePage /></UserRoute>} />
         <Route path="/checkout" element={<UserRoute><Checkout /></UserRoute>} />
         <Route path="/invoice" element={<UserRoute><Invoice /></UserRoute>} />
         <Route path="/feedback" element={<UserRoute><FeedbackListPage /></UserRoute>} />
 
-        {/* Weather Route */}
+        {/* ── Weather Route ────────────────────────────────────────── */}
         <Route path="/weather" element={<WeatherPage />} />
 
-        {/* Public / Mixed Routes */}
+        {/* ── Public / Mixed Routes ────────────────────────────────── */}
         <Route path="/orders/:userId" element={<OrderHistory />} />
         <Route path="/customerviewevent" element={<CustomerViewEvent />} />
         <Route path="/customerproduct/:eventId/:eventName?" element={<CustomerProduct />} />
 
-        {/* SignIn Route */}
+        {/* ── Auth Routes ──────────────────────────────────────────── */}
         <Route path="/signin" element={getSignInElement()} />
         
         
         {/* SignUp Route - Redirect to signin */}
         <Route path="/signup" element={<Navigate to="/signin" replace />} />
-
         <Route path="/forgot-password/*" element={<ForgotPasswordPage />} />
         <Route path="/reset-password/:token" element={<ResetPasswordForm />} />
+
+        {/* ── Public Pages ─────────────────────────────────────────── */}
         <Route path="/" element={<HomePage />} />
         <Route path="/aboutus" element={<AboutUs />} />
         <Route path="/contactus" element={<ContactUs />} />

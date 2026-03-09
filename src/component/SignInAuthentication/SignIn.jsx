@@ -69,7 +69,7 @@ const SignIn = () => {
       if (user.role === "manager") {
         navigate("/admindashboard");
       } else if (user.role === "investor") {
-        navigate("/investor-dashboard");
+        navigate("/investor/dashboard");
       } else {
         // Safety fallback — field workers should never reach web login
         setError("Access denied. Please use the mobile app.");

@@ -1,6 +1,6 @@
-//path: src/component/TreeMgt/AddTreeModal.jsx
+// path: src/component/TreeMgt/AddTreeModal.jsx
 import React, { useState, useEffect } from "react";
-import { X, Calendar } from "lucide-react";
+import { X, ShieldCheck } from "lucide-react"; // Added ShieldCheck icon
 import { treeService } from "../../services/treeService";
 
 const AddTreeModal = ({ isOpen, onClose, onSave }) => {
@@ -13,7 +13,6 @@ const AddTreeModal = ({ isOpen, onClose, onSave }) => {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Set plantedDate to current date when modal opens
   useEffect(() => {
     if (isOpen) {
       const today = new Date();
@@ -27,64 +26,37 @@ const AddTreeModal = ({ isOpen, onClose, onSave }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const validateForm = () => {
     const newErrors = {};
-    
-    // Required fields validation
     if (!formData.block.trim()) newErrors.block = "Block is required";
-    
-    // Block validation
-    if (formData.block && !/^Block-[A-F]$/.test(formData.block)) {
-      newErrors.block = "Block must be in format Block-A through Block-F";
-    }
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
     if (validateForm()) {
       setIsSubmitting(true);
       try {
-        // Prepare the data for API call with default values
         const submitData = {
           ...formData,
-          // Default values as per requirements
-          healthStatus: "Healthy", // Always healthy when planted
-          lifecycleStatus: "Growing", // Always growing when planted
-          inoculationCount: 0, // Always 0 when planted
-          readyForInoculation: false,
-          readyForHarvest: false,
-          nfcTagId: null, // No NFC assigned yet
-          gps: { lat: 0, lng: 0 }, // Default GPS
-          lastInspection: null,
-          inspectedBy: null,
-          offlineUpdated: false,
+          healthStatus: "Healthy",
+          lifecycleStatus: "Growing",
+          inoculationCount: 0,
+          blockchainStatus: "Pending", // Set initial status for Polygon Sync
+          gps: { lat: 0, lng: 0 },
           lastUpdatedBy: "web-admin"
         };
 
         await treeService.createTree(submitData);
         onSave();
-        
-        // Reset form after successful submission
-        setFormData({
-          investorId: "",
-          investorName: "",
-          block: ""
-        });
-        setErrors({});
+        handleClose();
       } catch (error) {
         console.error('Error creating tree:', error);
-        alert('Failed to create tree. Please try again.');
+        alert('Failed to create tree.');
       } finally {
         setIsSubmitting(false);
       }
@@ -92,11 +64,7 @@ const AddTreeModal = ({ isOpen, onClose, onSave }) => {
   };
 
   const handleClose = () => {
-    setFormData({
-      investorId: "",
-      investorName: "",
-      block: ""
-    });
+    setFormData({ investorId: "", investorName: "", block: "" });
     setErrors({});
     onClose();
   };
@@ -105,109 +73,62 @@ const AddTreeModal = ({ isOpen, onClose, onSave }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-xl w-full max-w-md max-h-[90vh] overflow-y-auto">
-        {/* Header */}
+      <div className="bg-white rounded-xl w-full max-w-md max-h-[90vh] overflow-y-auto shadow-2xl">
         <div className="flex justify-between items-center p-6 border-b sticky top-0 bg-white">
-          <h2 className="text-xl font-semibold text-gray-800">Add a New Tree</h2>
-          <button 
-            onClick={handleClose}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-          >
-            <X size={20} className="text-gray-500" />
-          </button>
+          <h2 className="text-xl font-semibold text-gray-800">Register New Tree</h2>
+          <button onClick={handleClose} className="p-2 hover:bg-gray-100 rounded-lg"><X size={20} /></button>
         </div>
 
-        {/* Form */}
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           <div className="space-y-4">
-            
-            {/* Block - Required */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Block <span className="text-red-500">*</span>
-              </label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Block *</label>
               <select
                 name="block"
                 value={formData.block}
                 onChange={handleChange}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
                 required
               >
                 <option value="">Select Block</option>
-                <option value="Block-A">Block A</option>
-                <option value="Block-B">Block B</option>
-                <option value="Block-C">Block C</option>
-                <option value="Block-D">Block D</option>
-                <option value="Block-E">Block E</option>
-                <option value="Block-F">Block F</option>
+                {['A', 'B', 'C', 'D', 'E', 'F'].map(b => (
+                  <option key={b} value={`Block-${b}`}>Block {b}</option>
+                ))}
               </select>
-              {errors.block && (
-                <p className="text-red-500 text-xs mt-1">{errors.block}</p>
-              )}
             </div>
 
-            {/* Investor ID - Optional */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Investor ID
-              </label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Investor ID</label>
               <input
                 type="text"
                 name="investorId"
                 value={formData.investorId}
                 onChange={handleChange}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                placeholder="Optional (e.g., INV-001)"
+                className="w-full p-3 border border-gray-300 rounded-lg"
+                placeholder="INV-000"
               />
             </div>
 
-            {/* Investor Name - Optional */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Investor Name
-              </label>
-              <input
-                type="text"
-                name="investorName"
-                value={formData.investorName}
-                onChange={handleChange}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                placeholder="Optional"
-              />
-            </div>
-
-            {/* Auto-generated Info */}
-            <div className="bg-gray-50 p-4 rounded-lg space-y-2">
-              <h3 className="text-sm font-medium text-gray-700">Other Information</h3>
-              <div className="text-sm text-gray-600">
-                <p><strong>Planted Date:</strong> {formData.plantedDate}</p>
-                <p><strong>Initial Age:</strong> 0 years 0 months</p>
-                <p><strong>Health Status:</strong> Healthy</p>
-                <p><strong>Lifecycle Status:</strong> Growing</p>
-                <p><strong>Inoculation Count:</strong> 0</p>
-                <p><strong>NFC Tag:</strong> Not assigned yet</p>
-                <p><strong>GPS:</strong> Not captured yet</p>
+            {/* Blockchain Notice */}
+            <div className="bg-blue-50 border border-blue-100 p-4 rounded-lg flex gap-3">
+              <ShieldCheck className="text-blue-600 shrink-0" size={20} />
+              <div>
+                <p className="text-xs font-semibold text-blue-800 uppercase tracking-wider">Blockchain Integration</p>
+                <p className="text-xs text-blue-600 mt-1">
+                  Once registered, this tree will be queued for the next Polygon Network synchronization cycle.
+                </p>
               </div>
             </div>
-
           </div>
 
-          {/* Form Actions */}
-          <div className="flex justify-end gap-3 pt-6 border-t">
-            <button
-              type="button"
-              onClick={handleClose}
-              className="px-6 py-3 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+          <div className="flex justify-end gap-3 pt-4 border-t">
+            <button type="button" onClick={handleClose} className="px-6 py-2 text-gray-600 border rounded-lg">Cancel</button>
+            <button 
+              type="submit" 
               disabled={isSubmitting}
+              className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:bg-gray-400"
             >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium disabled:bg-gray-400 disabled:cursor-not-allowed"
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? "Creating..." : "Register Tree"}
+              {isSubmitting ? "Processing..." : "Register Tree"}
             </button>
           </div>
         </form>
