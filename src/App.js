@@ -58,7 +58,6 @@ import Certificate from "./pages/Certificate";
 
 import InvestorDashboard from "./pages/InvestorDashboard";
 
-import CreateInvestorLogin from './pages/CreateInvestorLogin';
 
 // Public pages
 import AboutUs from "./pages/AboutUs";
@@ -104,6 +103,7 @@ function AppWithRoutes() {
     location.pathname === "/resin-analysis-table" ||
     location.pathname === "/iot-sensor-data" ||
     location.pathname === "/treemgt" ||
+    location.pathname.startsWith("/treeprofile") ||
     location.pathname === "/admindashboard" ||
     location.pathname === "/taskmgt" ||
     location.pathname.startsWith("/certificates") ||

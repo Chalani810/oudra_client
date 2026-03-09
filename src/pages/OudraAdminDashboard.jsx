@@ -1,6 +1,7 @@
 // path: oudra-client/src/pages/OudraAdminDashboard.jsx
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import html2canvas from "html2canvas";
 import {
   Filter, Camera, FileText, Download,
   CloudSun, Thermometer, Wind, Droplets, Eye, Gauge,
@@ -78,18 +79,20 @@ const WeatherSection = () => {
 
   useEffect(() => { fetchWeather(); }, [query, units]); // eslint-disable-line
 
-  const fetchWeather = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const data = await getFormattedWeatherData({ ...query, units });
-      setWeather(data);
-    } catch {
-      setError("Could not load weather data.");
-    } finally {
-      setLoading(false);
-    }
-  };
+ // Find this in OudraAdminDashboard.jsx
+const fetchWeather = async () => {
+  setLoading(true);
+  setError(null);
+  try {
+    const data = await getFormattedWeatherData({ ...query, units });
+    setWeather(data);
+  } catch (err) { 
+    console.error("Detailed Weather Error:", err); 
+    setError("Could not load weather data.");
+  } finally {
+    setLoading(false);
+  }
+};
 
   const tempUnit = units === "metric" ? "°C" : "°F";
   const windUnit = units === "metric" ? "m/s" : "mph";
@@ -373,9 +376,31 @@ const OudraAdminDashboard = () => {
     }
   };
 
-  const handleGenerateReport = () => alert("Report generation feature coming soon");
-  const handleExportMap      = () => alert("Map export feature coming soon");
-  const handleMapSnapshot    = () => alert("Map snapshot feature coming soon");
+  const mapRef = useRef(null);
+
+  const downloadMapImage = async () => {
+    if (!mapRef.current) return;
+    
+    try {
+      const canvas = await html2canvas(mapRef.current, {
+        useCORS: true, // Crucial for loading Google Maps tiles
+        allowTaint: true,
+        backgroundColor: null,
+      });
+      
+      const image = canvas.toDataURL("image/png");
+      const link = document.createElement("a");
+      link.download = `Oudra-Tree-Map-${new Date().toISOString().split('T')[0]}.png`;
+      link.href = image;
+      link.click();
+    } catch (error) {
+      console.error("Error capturing map:", error);
+      alert("Failed to capture map snapshot.");
+    }
+  };
+
+  const handleExportMap = downloadMapImage;
+  const handleMapSnapshot = downloadMapImage;
 
   return (
     <div className="flex min-h-screen bg-gray-100">
@@ -421,18 +446,14 @@ const OudraAdminDashboard = () => {
 
         {/* ── Map Area ── */}
         <div className="p-6 pb-4">
-          <div className="relative bg-white rounded-xl shadow-sm w-full h-[600px] overflow-hidden">
+          {/* 👇 ADDED ref={mapRef} HERE */}
+          <div ref={mapRef} className="relative bg-white rounded-xl shadow-sm w-full h-[600px] overflow-hidden">
             <TreeMap />
 
             {/* Action Buttons (Top centre) */}
             <div className="absolute top-4 left-1/2 transform -translate-x-1/2 flex gap-3 z-10">
-              <button
-                onClick={handleGenerateReport}
-                className="flex items-center bg-white px-3 py-2 rounded-lg shadow hover:bg-gray-100 transition-colors"
-              >
-                <FileText size={18} className="mr-2" />
-                Generate Report
-              </button>
+              {/* REMOVED Generate Report Button */}
+              
               <button
                 onClick={handleExportMap}
                 className="flex items-center bg-white px-3 py-2 rounded-lg shadow hover:bg-gray-100 transition-colors"

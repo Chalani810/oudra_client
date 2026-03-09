@@ -11,6 +11,8 @@ import React, { useState, useEffect } from "react";
 import { Edit, Trash2, RefreshCw, Eye, Calendar, AlertCircle, CheckCircle } from "lucide-react";
 import { taskService } from "../../services/taskService";
 import EditTaskModal from "./EditTaskModal";
+import DeleteConfirmModal from "../DeleteConfirmModal";
+import SuccessModal from "../SuccessModal";
 
 const statusColors = {
   assigned:    "bg-blue-100 text-blue-800",
@@ -34,6 +36,12 @@ const TasksTable = ({ searchTerm = "", filters = {} }) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedTask,   setSelectedTask]   = useState(null);
   const [showDetails,    setShowDetails]    = useState(false);
+  
+  // New Modal States
+  const [isEditSuccessOpen, setIsEditSuccessOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [taskToDelete, setTaskToDelete] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => { fetchTasks(); }, []);
 
@@ -127,16 +135,24 @@ const TasksTable = ({ searchTerm = "", filters = {} }) => {
 
   const filteredTasks = applyFilters(tasksWithOverdue);
 
-  const handleDelete = async (taskId, taskTitle) => {
-    if (window.confirm(`Are you sure you want to delete "${taskTitle}"? This action cannot be undone.`)) {
-      try {
-        await taskService.deleteTask(taskId);
-        alert("Task deleted successfully");
-        fetchTasks();
-      } catch (error) {
-        console.error("Error deleting task:", error);
-        alert("Failed to delete task");
-      }
+  const handleDeleteClick = (task) => {
+    setTaskToDelete(task);
+    setDeleteModalOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    if (!taskToDelete) return;
+    setIsDeleting(true);
+    try {
+      await taskService.deleteTask(taskToDelete._id);
+      fetchTasks();
+      setDeleteModalOpen(false);
+      setTaskToDelete(null);
+    } catch (error) {
+      console.error("Error deleting task:", error);
+      alert("Failed to delete task");
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -153,6 +169,7 @@ const TasksTable = ({ searchTerm = "", filters = {} }) => {
   const handleTaskUpdated = () => {
     setIsEditModalOpen(false);
     setEditingTask(null);
+    setIsEditSuccessOpen(true); // Show success modal after edit
     fetchTasks();
   };
 
@@ -284,7 +301,7 @@ const TasksTable = ({ searchTerm = "", filters = {} }) => {
                     <button onClick={() => handleEdit(task)} className="text-gray-600 hover:text-blue-700 transition-colors p-1" title="Edit">
                       <Edit size={18} />
                     </button>
-                    <button onClick={() => handleDelete(task._id, task.title)} className="text-gray-600 hover:text-red-700 transition-colors p-1" title="Delete">
+                    <button onClick={() => handleDeleteClick(task)} className="text-gray-600 hover:text-red-700 transition-colors p-1" title="Delete">
                       <Trash2 size={18} />
                     </button>
                   </div>
@@ -374,6 +391,26 @@ const TasksTable = ({ searchTerm = "", filters = {} }) => {
         onClose={() => { setIsEditModalOpen(false); setEditingTask(null); }}
         task={editingTask}
         onTaskUpdated={handleTaskUpdated}
+      />
+
+      <SuccessModal 
+        isOpen={isEditSuccessOpen}
+        onClose={() => setIsEditSuccessOpen(false)}
+        title="Task Updated"
+        message="The task has been successfully updated."
+      />
+
+      <DeleteConfirmModal 
+        isOpen={deleteModalOpen}
+        onClose={() => {
+          setDeleteModalOpen(false);
+          setTaskToDelete(null);
+        }}
+        onConfirm={confirmDelete}
+        title="Delete Task"
+        message="Are you sure you want to permanently delete this task?"
+        itemName={taskToDelete ? `${taskToDelete.taskId} - ${taskToDelete.title}` : ""}
+        isDeleting={isDeleting}
       />
     </>
   );

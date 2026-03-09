@@ -8,6 +8,7 @@
 import React, { useState } from "react";
 import { Plus, Search, Filter, X, ChevronDown, ChevronUp } from "lucide-react";
 import AddEmployeeModal from "./AddEmployeeModal";
+import SuccessModal from "../SuccessModal"; // Add this line
 import { employeeService } from "../../services/employeeService";
 
 const EMPTY_FILTERS = {
@@ -20,6 +21,7 @@ const EMPTY_FILTERS = {
 
 const EmployeeMgtTopBar = ({ onEmployeeAdded, onSearch, onFilter }) => {
   const [isAddModalOpen,  setAddModalOpen]   = useState(false);
+  const [isSuccessOpen,   setIsSuccessOpen]  = useState(false); // Add this line
   const [searchTerm,      setSearchTerm]     = useState("");
   const [showFilterPanel, setShowFilterPanel] = useState(false);
   const [filters,         setFilters]         = useState(EMPTY_FILTERS);
@@ -48,8 +50,8 @@ const EmployeeMgtTopBar = ({ onEmployeeAdded, onSearch, onFilter }) => {
     try {
       await employeeService.createEmployee(employeeData);
       setAddModalOpen(false);
+      setIsSuccessOpen(true); // Trigger modal
       onEmployeeAdded?.();
-      alert("Employee added successfully!");
     } catch (error) {
       console.error("Error saving employee:", error);
       alert("Failed to add employee");
@@ -203,6 +205,13 @@ const EmployeeMgtTopBar = ({ onEmployeeAdded, onSearch, onFilter }) => {
         isOpen={isAddModalOpen}
         onClose={() => setAddModalOpen(false)}
         onSave={handleSaveEmployee}
+      />
+
+      <SuccessModal 
+        isOpen={isSuccessOpen}
+        onClose={() => setIsSuccessOpen(false)}
+        title="Field Worker Added"
+        message="The new field worker has been successfully registered."
       />
     </>
   );

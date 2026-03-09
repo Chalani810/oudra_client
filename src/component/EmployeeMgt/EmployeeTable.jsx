@@ -12,14 +12,24 @@ import { employeeService } from "../../services/employeeService";
 import EditEmployeeModal from "./EditEmployeeModal";
 import ViewEmployeeModal from "./ViewEmployeeModal";
 import CreateLoginAccountModal from "./CreateLoginAccountModal";
+import DeleteConfirmModal from "../DeleteConfirmModal";
+import SuccessModal from "../SuccessModal";
 
 const EmployeeTable = ({ employees, loading, onRefresh, totalCount }) => {
   const [editingEmployee,  setEditingEmployee]  = useState(null);
   const [viewingEmployee,  setViewingEmployee]  = useState(null);
-  const [loginEmployee,    setLoginEmployee]    = useState(null);   // NEW
+  const [loginEmployee,    setLoginEmployee]    = useState(null);
   const [isEditModalOpen,  setIsEditModalOpen]  = useState(false);
   const [isViewModalOpen,  setIsViewModalOpen]  = useState(false);
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);  // NEW
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+
+  // New Modal States
+  const [isEditSuccessOpen, setIsEditSuccessOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [employeeToDelete, setEmployeeToDelete] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  // NEW: Map of email → true/false indicating if a login account exists
 
   // NEW: Map of email → true/false indicating if a login account exists
   const [loginAccountStatuses, setLoginAccountStatuses] = useState({});
@@ -54,16 +64,24 @@ const EmployeeTable = ({ employees, loading, onRefresh, totalCount }) => {
     }
   };
 
-  const handleDelete = async (employeeId, employeeName) => {
-    if (window.confirm(`Are you sure you want to delete "${employeeName}"? This action cannot be undone.`)) {
-      try {
-        await employeeService.deleteEmployee(employeeId);
-        alert("Employee deleted successfully");
-        onRefresh?.();
-      } catch (error) {
-        console.error("Error deleting employee:", error);
-        alert("Failed to delete employee. Please try again.");
-      }
+  const handleDeleteClick = (employee) => {
+    setEmployeeToDelete(employee);
+    setDeleteModalOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    if (!employeeToDelete) return;
+    setIsDeleting(true);
+    try {
+      await employeeService.deleteEmployee(employeeToDelete._id);
+      onRefresh?.();
+      setDeleteModalOpen(false);
+      setEmployeeToDelete(null);
+    } catch (error) {
+      console.error("Error deleting employee:", error);
+      alert("Failed to delete employee. Please try again.");
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -80,6 +98,7 @@ const EmployeeTable = ({ employees, loading, onRefresh, totalCount }) => {
   const handleEditSave = () => {
     setIsEditModalOpen(false);
     setEditingEmployee(null);
+    setIsEditSuccessOpen(true); // Show success modal after edit
     onRefresh?.();
   };
 
@@ -243,7 +262,7 @@ const EmployeeTable = ({ employees, loading, onRefresh, totalCount }) => {
 
                       {/* Delete */}
                       <button
-                        onClick={() => handleDelete(employee._id, employee.name)}
+                        onClick={() => handleDeleteClick(employee)}
                         className="text-gray-600 hover:text-red-700 transition-colors p-1"
                         title="Delete"
                       >
@@ -322,6 +341,28 @@ const EmployeeTable = ({ employees, loading, onRefresh, totalCount }) => {
         isOpen={isLoginModalOpen}
         onClose={handleLoginModalClose}
         employee={loginEmployee}
+      />
+
+      {/* Success Modal for Editing */}
+      <SuccessModal 
+        isOpen={isEditSuccessOpen}
+        onClose={() => setIsEditSuccessOpen(false)}
+        title="Employee Updated"
+        message="The field worker's details have been successfully updated."
+      />
+
+      {/* Delete Confirmation Modal */}
+      <DeleteConfirmModal 
+        isOpen={deleteModalOpen}
+        onClose={() => {
+          setDeleteModalOpen(false);
+          setEmployeeToDelete(null);
+        }}
+        onConfirm={confirmDelete}
+        title="Delete Field Worker"
+        message="Are you sure you want to permanently delete this employee? This action cannot be undone."
+        itemName={employeeToDelete ? `${employeeToDelete.empId} - ${employeeToDelete.name}` : ""}
+        isDeleting={isDeleting}
       />
     </>
   );

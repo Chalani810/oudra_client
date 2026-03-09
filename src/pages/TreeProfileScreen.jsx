@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { treeService } from "../services/treeService";
+import SidePanel from "../component/SidePanel";
 
 // Helper functions
 // Calculate tree age in years and months
@@ -188,7 +189,6 @@ export default function TreeProfileScreen() {
   const [treeHistory, setTreeHistory] = useState([]);
   const [historyLoading, setHistoryLoading] = useState(true);
 
-  const [isAssignTaskOpen, setAssignTaskOpen] = useState(false);
   const [isDeleteOpen, setDeleteOpen] = useState(false);
   const [isMarkHarvestedOpen, setMarkHarvestedOpen] = useState(false);
   const [harvestNotes, setHarvestNotes] = useState("");
@@ -326,9 +326,18 @@ export default function TreeProfileScreen() {
   const harvestReady = isReadyForHarvest(tree);
 
   return (
-    <div className="flex h-screen bg-gray-50">
-      {/* LEFT CONTENT */}
-      <div className="flex-1 p-6 overflow-y-auto">
+    <div className="flex h-screen bg-gray-50 w-full relative">
+      
+      {/* 1. Locks the SidePanel strictly to the left edge so it stops drifting */}
+      <div className="absolute left-0 top-0 h-full z-50">
+        <SidePanel />
+      </div>
+      
+      {/* 2. Pushes the main layout exactly 256px to the right to clear the sidebar */}
+      <div className="flex flex-1 overflow-hidden" style={{ marginLeft: '256px' }}>
+        
+        {/* LEFT CONTENT */}
+        <div className="flex-1 p-6 overflow-y-auto">
 
         {/* Title and Actions */}
         <div className="flex justify-between items-center mb-6">
@@ -676,17 +685,6 @@ export default function TreeProfileScreen() {
             Field Notes
           </button>
 
-          {!treeStatus.isFinal && (
-            <>
-              <button 
-                onClick={() => setAssignTaskOpen(true)} 
-                className="bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-medium transition duration-200"
-              >
-                Assign Task
-              </button>
-            </>
-          )}
-
           <button 
             onClick={() => setDeleteOpen(true)} 
             className="bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg font-medium transition duration-200"
@@ -728,6 +726,7 @@ export default function TreeProfileScreen() {
             </div>
           )}
         </div>
+      </div>      
       </div>
 
       {/* MODALS */}
@@ -769,31 +768,6 @@ export default function TreeProfileScreen() {
                 onClick={handleMarkAsHarvested}
               >
                 Mark as Harvested
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Assign Task Modal */}
-      {isAssignTaskOpen && (
-        <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50">
-          <div className="bg-white p-6 rounded-xl w-96">
-            <h3 className="font-semibold text-lg mb-4">Assign Task</h3>
-            <input
-              type="text"
-              placeholder="Enter task description"
-              className="w-full p-3 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-green-500"
-            />
-            <div className="flex justify-end gap-3">
-              <button
-                className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 transition duration-200"
-                onClick={() => setAssignTaskOpen(false)}
-              >
-                Cancel
-              </button>
-              <button className="px-4 py-2 rounded bg-green-600 hover:bg-green-700 text-white transition duration-200">
-                Assign
               </button>
             </div>
           </div>

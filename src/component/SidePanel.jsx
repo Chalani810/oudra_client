@@ -71,7 +71,6 @@ const SidePanel = () => {
     { name: "Investments", path: "/investor-management" },
     { name: "Employees", path: "/employee-mgt" },
     { name: "Investors", path: "/admin/manage-investor-logins" },
-    { name: "Settings", path: "" },
   ];
 
   const handleLogout = () => {

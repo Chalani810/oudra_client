@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { treeService } from "../../services/treeService";
 import { useNavigate } from "react-router-dom";
+import DeleteConfirmModal from "../DeleteConfirmModal";
 
 // ── Status badge colours ──────────────────────────────────────────────────
 const statusColors = {
@@ -235,15 +236,30 @@ const TreeTable = ({ searchTerm = "", filters = {} }) => {
   const filteredTrees = applyFilters(trees);
   const pendingCount  = trees.filter((t) => t.blockchainStatus !== "Verified").length;
 
-  const handleViewTree   = (treeId) => navigate(`/treeprofile/${treeId}`);
-  const handleDeleteTree = async (treeId) => {
-    if (window.confirm("Permanently delete this tree?")) {
-      try {
-        await treeService.deleteTree(treeId);
-        fetchTrees();
-      } catch {
-        alert("Failed to delete tree.");
-      }
+  const handleViewTree = (treeId) => navigate(`/treeprofile/${treeId}`);
+  
+  // --- New Modal States & Handlers ---
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [treeToDelete, setTreeToDelete] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const handleDeleteClick = (tree) => {
+    setTreeToDelete(tree);
+    setDeleteModalOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    if (!treeToDelete) return;
+    setIsDeleting(true);
+    try {
+      await treeService.deleteTree(treeToDelete.treeId);
+      await fetchTrees(); // Refresh table data
+      setDeleteModalOpen(false);
+      setTreeToDelete(null);
+    } catch (err) {
+      alert("Failed to delete tree.");
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -393,7 +409,7 @@ const TreeTable = ({ searchTerm = "", filters = {} }) => {
                     <Trash2
                       className="text-gray-400 hover:text-red-700 cursor-pointer"
                       size={18}
-                      onClick={() => handleDeleteTree(tree.treeId)}
+                      onClick={() => handleDeleteClick(tree)}
                     />
                   </td>
                 </tr>
@@ -402,6 +418,20 @@ const TreeTable = ({ searchTerm = "", filters = {} }) => {
           </tbody>
         </table>
       </div>
+
+      {/* Delete Confirmation Modal */}
+      <DeleteConfirmModal 
+        isOpen={deleteModalOpen}
+        onClose={() => {
+          setDeleteModalOpen(false);
+          setTreeToDelete(null);
+        }}
+        onConfirm={confirmDelete}
+        title="Delete Tree Record"
+        message="Are you sure you want to permanently delete this tree? All associated history and data will be lost."
+        itemName={treeToDelete ? `Tree ID: ${treeToDelete.treeId}` : ""}
+        isDeleting={isDeleting}
+      />
     </>
   );
 };

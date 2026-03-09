@@ -1,7 +1,7 @@
 // src/pages/IoTSensorData.js
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Eye, Trash2, RefreshCw, Filter, FileDown, Loader2 } from "lucide-react";
+import { Eye, RefreshCw, Filter, FileDown, Loader2 } from "lucide-react";
 import SidePanel from "../component/SidePanel";
 
 const getAuthHeaders = () => {
@@ -253,23 +253,7 @@ export default function IotSensorData() {
                             >
                               <Eye size={18} />
                             </button>
-                            <button
-                              onClick={() => {
-                                if (
-                                  window.confirm(
-                                    "Are you sure you want to delete this sensor record?"
-                                  )
-                                ) {
-                                  setAllData((prev) =>
-                                    prev.filter((t) => t._id !== row._id)
-                                  );
-                                }
-                              }}
-                              className="text-gray-600 hover:text-red-600 transition-colors"
-                              title="Delete Record"
-                            >
-                              <Trash2 size={18} />
-                            </button>
+  
                           </div>
                         </td>
                       </tr>

@@ -87,7 +87,6 @@ const EditEmployeeModal = ({ isOpen, onClose, employee, onSave }) => {
         await employeeService.updateEmployee(employee._id, formData);
         onSave();
         onClose();
-        alert("Employee updated successfully!");
       } catch (error) {
         console.error('Error updating employee:', error);
         alert('Failed to update employee. Please try again.');

@@ -9,6 +9,7 @@
 import React, { useState } from "react";
 import { Plus, Search, Filter, X, ChevronDown, ChevronUp } from "lucide-react";
 import AddTreeModal from "./AddTreeModal";
+import SuccessModal from "../SuccessModal"; 
 
 const BLOCKS = ["Block-A", "Block-B", "Block-C", "Block-D", "Block-E", "Block-F"];
 
@@ -36,6 +37,7 @@ const EMPTY_FILTERS = {
 
 const TreeMgtTopBar = ({ onTreeAdded, onSearch, onFilter }) => {
   const [isAddModalOpen,   setAddModalOpen]   = useState(false);
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false); // Add this line
   const [searchTerm,       setSearchTerm]     = useState("");
   const [showFilterPanel,  setShowFilterPanel] = useState(false);
   const [filters,          setFilters]         = useState(EMPTY_FILTERS);
@@ -261,14 +263,23 @@ const TreeMgtTopBar = ({ onTreeAdded, onSearch, onFilter }) => {
         )}
       </div>
 
-      {/* Add Tree Modal */}
+     {/* Add Tree Modal */}
       <AddTreeModal
         isOpen={isAddModalOpen}
         onClose={() => setAddModalOpen(false)}
         onSave={() => {
           setAddModalOpen(false);
-          onTreeAdded?.();
+          setIsSuccessModalOpen(true); // Open success modal
+          onTreeAdded?.(); // Refresh the table
         }}
+      />
+
+      {/* Success Modal */}
+      <SuccessModal 
+        isOpen={isSuccessModalOpen}
+        onClose={() => setIsSuccessModalOpen(false)}
+        title="Tree Registered!"
+        message="The new tree has been successfully added to the system and queued for blockchain synchronization."
       />
     </>
   );

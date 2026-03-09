@@ -191,9 +191,9 @@ const EditTaskModal = ({ isOpen, onClose, task, onTaskUpdated }) => {
       
       console.log("Updating task with data:", taskData);
       await taskService.updateTask(task._id, taskData);
-      alert("Task updated successfully!");
       onTaskUpdated();
       onClose();
+      
     } catch (error) {
       console.error("Error updating task:", error);
       alert(`Failed to update task: ${error.response?.data?.message || error.message}`);

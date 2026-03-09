@@ -207,10 +207,10 @@ const AddTaskModal = ({ isOpen, onClose, onTaskCreated }) => {
       const response = await taskService.createTask(taskData);
       console.log("✅ Task creation response:", response);
       
-      alert("Task created successfully!");
       onTaskCreated();
       resetForm();
       onClose();
+      
     } catch (error) {
       console.error("❌ Error creating task:", error);
       console.error("Error details:", {

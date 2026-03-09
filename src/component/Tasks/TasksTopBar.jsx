@@ -9,6 +9,7 @@
 import React, { useState, useEffect } from "react";
 import { Plus, Search, Filter, X, ChevronDown, ChevronUp } from "lucide-react";
 import AddTaskModal from "./AddTaskModal";
+import SuccessModal from "../SuccessModal"; // Add this line
 import { employeeService } from "../../services/employeeService";
 
 const TASK_TYPES = [
@@ -39,6 +40,7 @@ const EMPTY_FILTERS = {
 
 const TasksTopBar = ({ onTaskCreated, onSearch, onFilter }) => {
   const [isAddModalOpen,  setAddModalOpen]   = useState(false);
+  const [isSuccessOpen,   setIsSuccessOpen]  = useState(false); // Add this
   const [searchTerm,      setSearchTerm]     = useState("");
   const [showFilterPanel, setShowFilterPanel] = useState(false);
   const [filters,         setFilters]         = useState(EMPTY_FILTERS);
@@ -73,6 +75,7 @@ const TasksTopBar = ({ onTaskCreated, onSearch, onFilter }) => {
 
   const handleTaskCreated = () => {
     setAddModalOpen(false);
+    setIsSuccessOpen(true); // Trigger modal
     onTaskCreated?.();
   };
 
@@ -275,6 +278,13 @@ const TasksTopBar = ({ onTaskCreated, onSearch, onFilter }) => {
         isOpen={isAddModalOpen}
         onClose={() => setAddModalOpen(false)}
         onTaskCreated={handleTaskCreated}
+      />
+
+      <SuccessModal 
+        isOpen={isSuccessOpen}
+        onClose={() => setIsSuccessOpen(false)}
+        title="Task Created"
+        message="The new task has been successfully created and assigned."
       />
     </>
   );
