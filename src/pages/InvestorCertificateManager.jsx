@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import SidePanel from "../component/SidePanel";
 
 // API Configuration
-const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
+const API_URL = `${process.env.REACT_APP_API_URL}/api` || "http://localhost:5000/api";
 
 const api = {
   investors: {
