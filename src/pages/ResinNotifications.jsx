@@ -4,7 +4,7 @@ import axios from 'axios';
 
 const NotificationPopup = ({ isOpen, onClose }) => {
   const [notifications, setNotifications] = useState([]);
-  const [loading, setLoading] = useState(true);\
+  const [loading, setLoading] = useState(true);
   var BASE_url = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
   const fetchNotifications = async () => {
