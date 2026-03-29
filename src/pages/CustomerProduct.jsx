@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-hot-toast";
 
-const apiUrl = "http://localhost:5000"; // Set your backend API base URL
+const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
 const ProductPage = () => {
   const [groupedProducts, setGroupedProducts] = useState({});

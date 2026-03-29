@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
 import { RiDeleteBinLine } from "react-icons/ri";
 
-const apiUrl = "http://localhost:5000";
+const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:5000";
 const userData = JSON.parse(localStorage.getItem("user"));
 
 const CartPage = () => {

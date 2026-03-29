@@ -27,11 +27,12 @@ const ResinAnalysisTable = () => {
   const [itemToDelete, setItemToDelete] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
+  var BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
   // Fetch API on mount
   useEffect(() => {
     const fetchResinData = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/resin", {
+        const res = await axios.get(`${BASE_URL}/resin`, {
           headers: getAuthHeaders(),
         });
         setData(res.data.data);
@@ -88,7 +89,7 @@ const ResinAnalysisTable = () => {
     
     setIsDeleting(true);
     try {
-      await axios.delete(`http://localhost:5000/resin/${itemToDelete._id}`, {
+      await axios.delete(`${BASE_URL}/resin/${itemToDelete._id}`, {
         headers: getAuthHeaders(),
       });
       

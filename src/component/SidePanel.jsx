@@ -12,10 +12,12 @@ const SidePanel = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const popupRef = useRef(null);
+  var BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
   const fetchNotifications = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/resin-notifications/unread');
+
+      const response = await axios.get(`${BASE_URL}/api/resin-notifications/unread`);
       setNotifications(response.data.data);
     } catch (error) {
       console.error("Error fetching notifications:", error);
@@ -43,7 +45,7 @@ const SidePanel = () => {
     e.preventDefault();
     try {
       setNotifications(notifications.filter(notif => notif._id !== id));
-      await axios.patch(`http://localhost:5000/api/resin-notifications/${id}/read`);
+      await axios.patch(`${BASE_URL}/api/resin-notifications/${id}/read`);
     } catch (error) {
       console.error("Error marking as read:", error);
       fetchNotifications();

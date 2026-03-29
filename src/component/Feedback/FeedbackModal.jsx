@@ -66,7 +66,7 @@ const FeedbackModal = ({ isEdit, feedback, onClose, onRefresh, orderId }) => {
         formDataToSend.append("photo", formData.photo);
       }
 
-      const backendBase = "http://localhost:5000";
+      const backendBase = process.env.REACT_APP_API_URL || "http://localhost:5000";
       const method = isEdit ? "PUT" : "POST";
       const url = isEdit ? `/feedback/${feedback._id}` : `/feedback/${user.id}`;
 

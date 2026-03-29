@@ -208,6 +208,7 @@ const ResinDetail = () => {
   const [selectedAction, setSelectedAction] = useState("");
   const [updating, setUpdating] = useState(false);
 
+  var BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
   useEffect(() => {
     loadData();
   }, [treeId]);
@@ -216,7 +217,7 @@ const ResinDetail = () => {
     setLoading(true);
     try {
       const res = await axios.get(
-        `http://localhost:5000/resin/record/${treeId}`,
+        `${BASE_URL}/resin/record/${treeId}`,
         { headers: getAuthHeaders() }
       );
       if (!res.data || !res.data.data) {
@@ -241,7 +242,7 @@ const ResinDetail = () => {
 
     setUpdating(true);
     try {
-      const res = await axios.patch(`http://localhost:5000/resin/${analysis._id}/status`,
+      const res = await axios.patch(`${BASE_URL}/resin/${analysis._id}/status`,
         { status: newStatus, notes: workflowNotes, performedBy: "Current User" },
         { headers: getAuthHeaders() }
       );
@@ -270,7 +271,7 @@ const ResinDetail = () => {
     setUpdating(true);
     try {
       const res = await axios.post(
-        `http://localhost:5000/resin/${analysis._id}/workflow-log`,
+        `${BASE_URL}/resin/${analysis._id}/workflow-log`,
         { action, notes, performedBy: "Current User" },
         { headers: getAuthHeaders() }
       );

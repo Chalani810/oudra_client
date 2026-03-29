@@ -14,7 +14,7 @@ const CreateInvestorLogin = () => {
   const [message, setMessage] = useState({ type: '', text: '' });
 
   // API CONFIG
-  const API_BASE_URL = "http://localhost:5000";
+  const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
   const AUTH_URL = `${API_BASE_URL}/auth`;
   const INVESTOR_URL = `${API_BASE_URL}/api/investors`;
 

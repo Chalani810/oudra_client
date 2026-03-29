@@ -3,6 +3,8 @@ import axios from 'axios';
 
 const PredictForm = () => {
   // Define the dropdown options from your encoders
+
+  
   const eventTypes = [
     { value: 'Wedding', label: 'Wedding' },
     { value: 'Corporate Event', label: 'Corporate Event' },
@@ -49,7 +51,7 @@ const PredictForm = () => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const res = await axios.post('http://localhost:5000/predict/predict', formData);
+      const res = await axios.post(`${process.env.REACT_APP_API_URL || "http://localhost:5000"}/predict/predict`, formData);
       setPrediction(res.data.prediction);
     } catch (error) {
       console.error('Prediction error:', error);

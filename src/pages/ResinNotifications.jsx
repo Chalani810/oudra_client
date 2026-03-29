@@ -4,11 +4,12 @@ import axios from 'axios';
 
 const NotificationPopup = ({ isOpen, onClose }) => {
   const [notifications, setNotifications] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);\
+  var BASE_url = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
   const fetchNotifications = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/resin-notifications/unread');
+      const response = await axios.get(`${BASE_url}/api/resin-notifications/unread`);
       setNotifications(response.data.data);
     } catch (error) {
       console.error("Error fetching notifications:", error);
@@ -28,7 +29,7 @@ const NotificationPopup = ({ isOpen, onClose }) => {
   const markAsRead = async (id) => {
     try {
       setNotifications(notifications.filter(notif => notif._id !== id));
-      await axios.patch(`http://localhost:5000/api/resin-notifications/${id}/read`);
+      await axios.patch(`${BASE_url}/api/resin-notifications/${id}/read`);
     } catch (error) {
       console.error("Error marking as read:", error);
       fetchNotifications();
